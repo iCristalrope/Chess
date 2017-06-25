@@ -3,9 +3,50 @@ IDEES ET NOTES
 
 
 faut de la structure mtn je crois
-commencer a decider quelles classes utiliser et ce qu'elles feront pour pouvoir avoir une vue globale complete t organiser le projet
+commencer a decider quelles classes utiliser et ce qu'elles feront pour pouvoir avoir une vue globale complete et organiser le projet
 
-classes necessaires:
-    interface Pieceable : ... test git
+CLASSES NECESSAIRES
+
+MODEL:
+
+    Interface Pieceable : Interface implementée par toutes les classes de pieces
+        accesible : retourne une liste de cases atteignables par simple deplacement
+        capturables : retourne une liste de cases atteignables par capture
+        move : deplace la piece sur une case atteignable par deplacement simple ou par capture
+
+    Enum Color : the two color option for pieces
+        
+    classe Board : plateau de jeu
+        tableau2D de Pieceable?
+        Override le toString() pour avoir un affichage pour verifier le bon fonctionnement du code
+
+    Classe King : classe representant le roi
+        color : couleur de l'enum Color
+
+    Classe Queen : classe representant la reine
+        color : couleur de l'enum Color
+
+    Classe Rook : classe representant la tour
+        color : couleur de l'enum Color
+
+    Classe Bishop : classe representant le fou
+        color : couleur de l'enum Color
+
+    Classe Knight : classe representant le cavlier
+        color : couleur de l'enum Color
+
+    Classe pawn : classe representant le pion
+        color : couleur de l'enum Color
+
+CONTROLLER : 
+
+    classe Game : facade du jeu
+        gere les regles et exception
+        interface la logique pour la vue
+        fait appels a toutes les autres classes du Model
+
+VIEW : 
+    //apres
+        
     
     
