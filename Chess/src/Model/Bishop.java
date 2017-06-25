@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package Model;
-import static Model.Bord.*;
+import static Model.Board.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +29,7 @@ public class Bishop implements Pieceable {
         return this.color;
     }
     
-    public static List<Coordinates> accessible(Coordinates pos, Bord bord){
+    public static List<Coordinates> accessible(Coordinates pos, Board bord){
         List <Coordinates> accessible = new ArrayList<>();
         Coordinates otherPos;
         //haut droite
