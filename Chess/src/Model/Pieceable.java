@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The interface all the pieces of the game implement. It standardises the methods among the pieces
@@ -16,7 +17,7 @@ public interface Pieceable {
      * @param coord the tile on which the piece sits
      * @return the list of coordinates reachable by the piece
      */
-    public ArrayList<Coordinates> captureable(Board board, Coordinates coord);
+    public List<Coordinates> captureable(Board board, Coordinates coord);
 
     /**
      * Returns the list of tiles accessible by an attack of a piece of this type sitting at that position
@@ -25,7 +26,7 @@ public interface Pieceable {
      * @param coord the tile on which the piece sits
      * @return the list of coordinates attackable by the piece
      */
-    public ArrayList<Coordinates> accessible(Board board, Coordinates coord);
+    public List<Coordinates> accessible(Board board, Coordinates coord);
 
     /**
      * Returns the color of this piece
