@@ -34,7 +34,7 @@ MODEL:
     Classe Bishop : classe representant le fou
         color : couleur de l'enum Color
 
-    Classe Knight : classe representant le cavlier
+    Classe Knight : classe representant le cavalier
         color : couleur de l'enum Color
 
     Classe pawn : classe representant le pion

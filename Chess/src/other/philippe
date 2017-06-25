@@ -1,3 +1,27 @@
 IDEES ET NOTES
-//////////////
+/////////////
+
+classe Coordinates?
+
+langue on peut faire après, c'est de l'affichage
+
+move pas dans interface. pas au niveau de la piece. sur plateau. 
+plutôt dans plateau ou Game
+
+interface:
+    public List<Coordinates> accessible(Bord bord){}
+    public List<Coordinates> capturable(Bord bord){}
+
+classe de l'interface:
+    overide du toString ici?
+
+    au début, pas coder mouvements spéciaux, juste règles et move de base
+    (prise du pion, prise en passant, rock, etc. : plus tard)
+
+controller:
+    init()
+    move()
+    take()?
+    nextPlayer()
+    endGame()
 
