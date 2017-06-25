@@ -21,6 +21,7 @@ MODEL:
     classe Board : plateau de jeu
         tableau2D de Pieceable?
         Override le toString() pour avoir un affichage pour verifier le bon fonctionnement du code
+        listes pieces noires / blanches (taille liste = nb piece sur tableau)
 
     Classe King : classe representant le roi
         color : couleur de l'enum Color

@@ -9,8 +9,8 @@ move pas dans interface. pas au niveau de la piece. sur plateau.
 plutôt dans plateau ou Game
 
 interface:
-    public List<Coordinates> accessible(Bord bord){}
-    public List<Coordinates> capturable(Bord bord){}
+    public List<Coordinates> accessible(Bord bord, Coordinates coord){}
+    public List<Coordinates> capturable(Bord bord, Coordinates coord){}
 
 classe de l'interface:
     overide du toString ici?
@@ -21,7 +21,6 @@ classe de l'interface:
 controller:
     init()
     move()
-    take()?
     nextPlayer()
     endGame()
 
