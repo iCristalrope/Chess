@@ -36,4 +36,15 @@ public class Board {
     public Pieceable getPiece(Coordinates coord) {
         return pieces[coord.getRow()][coord.getColumn()];
     }
+
+    /**
+     * Checks if a position is on the board
+     *
+     * @param coord the position to check
+     * @return true if the position is on the board, false if it is outside
+     */
+    public static boolean isOnBoard(Coordinates coord) {
+        return coord.getRow() >= 0 && coord.getRow() <= MAX_ROWS - 1 && coord.getColumn() >= 0
+                && coord.getColumn() <= MAX_COLUMNS - 1;
+    }
 }
