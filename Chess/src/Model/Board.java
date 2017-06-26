@@ -13,8 +13,14 @@ public class Board {
     Piece[][] pieces;
 
     public Board() {
+        this(false);
+    }
+
+    public Board(boolean isEmpty) {
         pieces = new Piece[MAX_ROWS][MAX_COLUMNS];
-        init();
+        if (!isEmpty) {
+            init();
+        }
     }
 
     private final void init() {
@@ -24,11 +30,10 @@ public class Board {
     /**
      * Moves a piece on the board according to the rules and takes the piece at the destination if necessary
      *
-     * @param board the board containing the pieces
      * @param origin the tile on which the moving piece starts
      * @param destination the tile on which the moving piece ends
      */
-    public void move(Board board, Coordinates origin, Coordinates destination) {
+    public void move(Coordinates origin, Coordinates destination) {
         //TODO implement move
     }
 
@@ -67,7 +72,7 @@ public class Board {
         if (!isOnBoard(coord)) {
             throw new GameException("coord is not on the board");
         }
-        
+
         return this.pieces[coord.getRow()][coord.getColumn()];
     }
 
@@ -109,5 +114,45 @@ public class Board {
         return (isOnBoard(coord) && getPiece(coord) != null && getPiece(coord).getColor() != color);
     }
 
-    //TODO toString 
+    @Override
+    public String toString() {
+        String str = "";
+        for (Piece[] piece : pieces) {
+            for (Piece piece1 : piece) {
+                if (piece1 != null) {
+                    if (piece1.getColor() == Color.BLACK) {
+                        str += "W";
+                    } else {
+                        str += "B";
+                    }
+
+                    String ts = piece1.toString();
+                    switch (ts.substring(ts.length()-4)) {
+                        case "King":
+                            str += "KI";
+                            break;
+                        case "ueen":
+                            str += "QU";
+                            break;
+                        case "shop":
+                            str += "BI";
+                            break;
+                        case "Rook":
+                            str += "RO";
+                            break;
+                        case "ight":
+                            str += "KN";
+                            break;
+                        default:
+                            str += "PA";
+                    }
+                    str += " ";
+                }else{
+                    str += "NUL ";
+                }
+            }
+            str += System.getProperty("line.separator");
+        }
+        return str;
+    }
 }

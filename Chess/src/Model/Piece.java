@@ -40,4 +40,8 @@ public abstract class Piece {
         return captureable;
     }
 
+    @Override
+    public String toString(){
+        return this.color + " " + this.getClass().getSimpleName();
+    }
 }
