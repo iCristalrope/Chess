@@ -10,10 +10,10 @@ public class Board {
     public static final int MAX_ROWS = 8;
     public static final int MAX_COLUMNS = 8;
 
-    Pieceable[][] pieces;
+    Piece[][] pieces;
 
     public Board() {
-        pieces = new Pieceable[MAX_ROWS][MAX_COLUMNS];
+        pieces = new Piece[MAX_ROWS][MAX_COLUMNS];
     }
 
     /**
@@ -33,8 +33,8 @@ public class Board {
      * @param coord the position of the piece to return
      * @return the piece at coord
      */
-    public Pieceable getPiece(Coordinates coord) {
-        return pieces[coord.getRow()][coord.getColumn()];
+    public Piece getPiece(Coordinates coord) {
+        return this.pieces[coord.getRow()][coord.getColumn()];
     }
 
     /**
@@ -46,5 +46,17 @@ public class Board {
     public static boolean isOnBoard(Coordinates coord) {
         return coord.getRow() >= 0 && coord.getRow() <= MAX_ROWS - 1 && coord.getColumn() >= 0
                 && coord.getColumn() <= MAX_COLUMNS - 1;
+    }
+    
+    
+    /**
+     * Checks if a position is attackable by a piece of a certain color. Uses the isOnBoard method
+     *
+     * @param coord the tile to check
+     * @param color the color of the piece attacking
+     * @return true if the piece at that position is of the other color than the one received
+     */
+    public boolean isAttackable(Coordinates coord, Color color) {
+        return (isOnBoard(coord) && getPiece(coord) != null && getPiece(coord).getColor() != color);
     }
 }
