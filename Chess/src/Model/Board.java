@@ -1,5 +1,8 @@
 package Model;
 
+import Model.PieceClasses.*;
+import java.util.List;
+
 /**
  * Class representing the board of the game
  *
@@ -34,7 +37,19 @@ public class Board {
      * @param destination the tile on which the moving piece ends
      */
     public void move(Coordinates origin, Coordinates destination) {
-        //TODO implement move
+        if (getPiece(origin) == null){
+            throw new GameException("No piece to move");
+        }
+        King piece = (King) getPiece(origin);
+        piece.update(this, origin);
+        List<Coordinates> access = piece.getAccessible();
+        List<Coordinates> captur = piece.getCaptureable();
+        if(!access.contains(destination) && !captur.contains(destination)){
+            throw new GameException("Spot is not reachable");
+        }
+        
+        pieces[origin.getRow()][origin.getColumn()] = null;
+        pieces[destination.getRow()][destination.getColumn()] = piece;
     }
 
     /**
@@ -127,7 +142,7 @@ public class Board {
                     }
 
                     String ts = piece1.toString();
-                    switch (ts.substring(ts.length()-4)) {
+                    switch (ts.substring(ts.length() - 4)) {
                         case "King":
                             str += "KI";
                             break;
@@ -147,7 +162,7 @@ public class Board {
                             str += "PA";
                     }
                     str += " ";
-                }else{
+                } else {
                     str += "NUL ";
                 }
             }

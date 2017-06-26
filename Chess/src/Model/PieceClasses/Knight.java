@@ -24,7 +24,7 @@ public class Knight extends Piece implements Pieceable {
      * @param color the color of the knight
      */
     public Knight(Color color) {
-        this.color = color;
+        super(color);
     }
 
     /**

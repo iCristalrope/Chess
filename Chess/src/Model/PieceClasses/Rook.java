@@ -1,6 +1,7 @@
 package Model.PieceClasses;
 
 import Model.Board;
+import Model.Color;
 import Model.Coordinates;
 import Model.Piece;
 import java.util.ArrayList;
@@ -13,6 +14,15 @@ import Model.Pieceable;
  * @author Olivier De Cannière
  */
 public class Rook extends Piece implements Pieceable {
+
+    /**
+     * Creates a Rook of the specified color
+     *
+     * @param color the color of the knight
+     */
+    public Rook(Color color) {
+        super(color);
+    }
 
     /**
      * Updates the accessible and captureable lists of the this piece
@@ -28,15 +38,13 @@ public class Rook extends Piece implements Pieceable {
 
     private List<Coordinates> accessible(Board board, Coordinates coord) {
         ArrayList<Coordinates> accessibles = new ArrayList<>();
-        
-        
+
         return accessibles;
     }
 
     private List<Coordinates> captureable(Board board, Coordinates coord) {
         ArrayList<Coordinates> captureables = new ArrayList<>();
-        
-        
+
         return captureables;
     }
 }

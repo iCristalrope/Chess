@@ -14,11 +14,11 @@ import Model.PieceClasses.*;
 public class Chess {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
-
         Board board = new Board(true);
         Piece piece = new King(Color.WHITE);
         board.putPiece(piece, new Coordinates(0, 1));
+        System.out.println(board.toString());
+        board.move(new Coordinates(0, 1), new Coordinates(0, 2));
         System.out.println(board.toString());
     }
 }

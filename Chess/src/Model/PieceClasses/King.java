@@ -19,12 +19,12 @@ public class King extends Piece implements Pieceable{
     };
 
     /**
-     * Creates a knight of the specified color
+     * Creates a King of the specified color
      *
      * @param color the color of the knight
      */
     public King(Color color) {
-        this.color = color;
+        super(color);
     }
     
     /**

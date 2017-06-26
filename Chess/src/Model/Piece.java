@@ -1,5 +1,6 @@
 package Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,6 +14,12 @@ public abstract class Piece {
     protected List<Coordinates> accessible;
     protected List<Coordinates> captureable;
 
+    public Piece(Color color){
+        this.accessible = new ArrayList<>();
+        this.captureable = new ArrayList<>();
+        this.color = color;
+    }
+    
     /**
      * Getter for the color attribute
      *
