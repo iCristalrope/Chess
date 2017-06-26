@@ -18,7 +18,7 @@ public class BishopTest {
     public void testUpdate() {
         System.out.println("update");
         Board board = new Board();
-        Coordinates coord = new ;
+        Coordinates coord = new Coordinates(0, 0);
         Bishop instance = null;
         instance.update(board, coord);
     }
