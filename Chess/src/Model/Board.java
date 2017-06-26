@@ -59,4 +59,6 @@ public class Board {
     public boolean isAttackable(Coordinates coord, Color color) {
         return (isOnBoard(coord) && getPiece(coord) != null && getPiece(coord).getColor() != color);
     }
+    
+    //TODO toString 
 }
