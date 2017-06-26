@@ -1,21 +1,21 @@
 package Model.PieceClasses;
 
-import static Model.Board.*;
 import Model.Board;
+import static Model.Board.isOnBoard;
 import Model.Color;
 import Model.Coordinates;
 import Model.Piece;
 import Model.Pieceable;
 
 /**
- * Class representing the knight piece
+ * Class representing the king piece
  *
  * @author Olivier De Cannière
  */
-public class Knight extends Piece implements Pieceable {
+public class King extends Piece implements Pieceable{
 
     private static final int[][] DIRECTION_UPDATE = {
-        {-2, +1}, {-1, +2}, {+1, +2}, {+2, +1}, {+2, -1}, {+1, -2}, {-1, -2}, {-2, -1}
+        {-1, +0}, {-1, +1}, {+0, +1}, {+1, +1}, {+1, +0}, {+1, -1}, {+0, -1}, {-1, -1}
     };
 
     /**
@@ -23,10 +23,10 @@ public class Knight extends Piece implements Pieceable {
      *
      * @param color the color of the knight
      */
-    public Knight(Color color) {
+    public King(Color color) {
         this.color = color;
     }
-
+    
     /**
      * Updates the accessible and captureable lists of the this piece
      *
@@ -49,4 +49,3 @@ public class Knight extends Piece implements Pieceable {
         }
     }
 }
-
