@@ -10,6 +10,7 @@ import java.util.List;
  */
 public class Bishop implements Pieceable {
 
+    private static int[][] updates = {{1,0},{1,1},{0,1},{-1,1},{-1,0},{-1,-1},{0,-1},{1,-1}};
     private Color color;
 
     public Bishop(Color color) {
@@ -21,6 +22,7 @@ public class Bishop implements Pieceable {
      *
      * @return the color
      */
+    @Override
     public Color getColor() {
         return this.color;
     }
@@ -37,7 +39,7 @@ public class Bishop implements Pieceable {
                 accessible.add(otherPos);
                 break;
             }
-            update();
+            update(updates[1]);
         }
         col = pos.getColumn();
         row = pos.getRow();
