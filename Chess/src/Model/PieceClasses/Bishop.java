@@ -1,5 +1,9 @@
-package Model;
+package Model.PieceClasses;
 
+import Model.Board;
+import Model.Color;
+import Model.Coordinates;
+import Model.Pieceable;
 import static Model.Board.*;
 import java.util.ArrayList;
 import java.util.List;

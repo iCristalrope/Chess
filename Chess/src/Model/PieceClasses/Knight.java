@@ -1,11 +1,10 @@
 package Model.PieceClasses;
 
+import static Model.Board.*;
 import Model.Board;
 import Model.Color;
 import Model.Coordinates;
 import Model.Piece;
-import java.util.ArrayList;
-import java.util.List;
 import Model.Pieceable;
 
 /**
@@ -14,6 +13,10 @@ import Model.Pieceable;
  * @author Olivier De Cannière
  */
 public class Knight extends Piece implements Pieceable {
+
+    private static final int[][] DIRECTION_UPDATE = {
+        {-2, +1}, {-1, +2}, {+1, +2}, {+2, +1}, {+2, -1}, {+1, -2}, {-1, -2}, {-2, -1}
+    };
 
     /**
      * Creates a knight of the specified color
@@ -32,93 +35,19 @@ public class Knight extends Piece implements Pieceable {
      */
     @Override
     public void update(Board board, Coordinates coord) {
-        this.accessible = accessible(board, coord);
-        this.captureable = captureable(board, coord);
-    }
-
-    /**
-     * Returns the list of tiles accessible by an attack of a piece of this type sitting at that position
-     *
-     * @param board the board containing the pieces
-     * @param coord the tile on which the piece sits
-     * @return the list of coordinates attackable by the piece
-     */
-    private List<Coordinates> accessible(Board board, Coordinates coord) {
-        ArrayList<Coordinates> accessibles = new ArrayList<>();
         Coordinates coord2;
-
-        if (Board.isOnBoard(coord2 = new Coordinates(coord.getRow() - 2, coord.getColumn() + 1))
-                && board.getPiece(coord2) == null) {  //-2 +1  , analogie horloge : 1h
-            accessibles.add(coord2);
+        
+        this.accessible.clear();
+        this.captureable.clear();
+        for (int[] directionUpdate : DIRECTION_UPDATE) {
+            coord2 = new Coordinates(coord.getRow() + directionUpdate[0], coord.getColumn() + directionUpdate[1]);
+            if (isOnBoard(coord2) && board.getPiece(coord2) == null){
+                accessible.add(coord2);
+            }else{
+                if (board.isAttackable(coord2, this.color)){
+                    captureable.add(coord2);
+                }
+            }
         }
-        if (Board.isOnBoard(coord2 = new Coordinates(coord.getRow() - 1, coord.getColumn() + 2))
-                && board.getPiece(coord2) == null) {  //-1 +2  , analogie horloge : 2h
-            accessibles.add(coord2);
-        }
-        if (Board.isOnBoard(coord2 = new Coordinates(coord.getRow() + 1, coord.getColumn() + 2))
-                && board.getPiece(coord2) == null) {  //+1 +2  , analogie horloge : 4h
-            accessibles.add(coord2);
-        }
-        if (Board.isOnBoard(coord2 = new Coordinates(coord.getRow() + 2, coord.getColumn() + 1))
-                && board.getPiece(coord2) == null) {  //+2 +1  , analogie horloge : 5h
-            accessibles.add(coord2);
-        }
-        if (Board.isOnBoard(coord2 = new Coordinates(coord.getRow() + 2, coord.getColumn() - 1))
-                && board.getPiece(coord2) == null) {  //+2 -1  , analogie horloge : 7h
-            accessibles.add(coord2);
-        }
-        if (Board.isOnBoard(coord2 = new Coordinates(coord.getRow() + 1, coord.getColumn() - 2))
-                && board.getPiece(coord2) == null) {  //+1 -2  , analogie horloge : 8h
-            accessibles.add(coord2);
-        }
-        if (Board.isOnBoard(coord2 = new Coordinates(coord.getRow() - 1, coord.getColumn() - 2))
-                && board.getPiece(coord2) == null) {  //-1 -2  , analogie horloge : 10h
-            accessibles.add(coord2);
-        }
-        if (Board.isOnBoard(coord2 = new Coordinates(coord.getRow() - 2, coord.getColumn() - 1))
-                && board.getPiece(coord2) == null) {  //-2 -1  , analogie horloge : 11h
-            accessibles.add(coord2);
-        }
-
-        return accessibles;
-    }
-
-    /**
-     * Returns the list of tiles reachable by simple displacement of a piece of this type at that position
-     *
-     * @param board the board containing the pieces
-     * @param coord the tile on which the piece sits
-     * @return the list of coordinates reachable by the piece
-     */
-    private List<Coordinates> captureable(Board board, Coordinates coord) {
-        ArrayList<Coordinates> captureables = new ArrayList<>();
-        Coordinates coord2;
-
-        if (board.isAttackable(coord2 = new Coordinates(coord.getRow() - 2, coord.getColumn() + 1), this.color)) {  //-2 +1  , analogie horloge : 1h
-            captureables.add(coord2);
-        }
-        if (board.isAttackable(coord2 = new Coordinates(coord.getRow() - 1, coord.getColumn() + 2), this.color)) {  //-1 +2  , analogie horloge : 2h
-            captureables.add(coord2);
-        }
-        if (board.isAttackable(coord2 = new Coordinates(coord.getRow() + 1, coord.getColumn() + 2), this.color)) {  //+1 +2  , analogie horloge : 4h
-            captureables.add(coord2);
-        }
-        if (board.isAttackable(coord2 = new Coordinates(coord.getRow() + 2, coord.getColumn() + 1), this.color)) {  //+2 +1  , analogie horloge : 5h
-            captureables.add(coord2);
-        }
-        if (board.isAttackable(coord2 = new Coordinates(coord.getRow() + 2, coord.getColumn() - 1), this.color)) {  //+2 -1  , analogie horloge : 7h
-            captureables.add(coord2);
-        }
-        if (board.isAttackable(coord2 = new Coordinates(coord.getRow() + 1, coord.getColumn() - 2), this.color)) {  //+1 -2  , analogie horloge : 8h
-            captureables.add(coord2);
-        }
-        if (board.isAttackable(coord2 = new Coordinates(coord.getRow() - 1, coord.getColumn() - 2), this.color)) {  //-1 -2  , analogie horloge : 10h
-            captureables.add(coord2);
-        }
-        if (board.isAttackable(coord2 = new Coordinates(coord.getRow() - 2, coord.getColumn() - 1), this.color)) {  //-2 -1  , analogie horloge : 11h
-            captureables.add(coord2);
-        }
-
-        return captureables;
     }
 }

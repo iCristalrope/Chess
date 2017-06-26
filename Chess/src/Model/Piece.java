@@ -21,4 +21,23 @@ public abstract class Piece {
     public Color getColor() {
         return this.color;
     }
+
+    /**
+     * Getter for the accessible attribute
+     *
+     * @return accessible
+     */
+    public List<Coordinates> getAccessible() {
+        return accessible;
+    }
+
+    /**
+     * Getter for the captureable attribute
+     *
+     * @return captureable
+     */
+    public List<Coordinates> getCaptureable() {
+        return captureable;
+    }
+
 }

@@ -24,7 +24,7 @@ public class Board {
      * @param destination the tile on which the moving piece ends
      */
     public void move(Board board, Coordinates origin, Coordinates destination) {
-
+        //TODO implement move
     }
 
     /**
