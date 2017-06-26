@@ -11,8 +11,7 @@ public class Coordinates {
     private final int column;
 
     /**
-     * Creates an object of type Coordinates and sets its attributes to the
-     * parameters received
+     * Creates an object of type Coordinates and sets its attributes to the parameters received
      *
      * @param row value to assign to the row attribute
      * @param column value to assign to the column attribute

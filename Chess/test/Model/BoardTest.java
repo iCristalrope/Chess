@@ -16,13 +16,13 @@ public class BoardTest {
      */
     @Test
     public void testMove() {
-        System.out.println("move");
-        Coordinates origin = null;
-        Coordinates destination = null;
+        Coordinates origin = new Coordinates(0, 1);
+        Coordinates destination = new Coordinates(0, 2);
         Board instance = new Board(true);
+        instance.putPiece(new King(Color.BLACK), origin);
         instance.move(origin, destination);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println(instance);
+        assertTrue(new King(Color.BLACK).equals(instance.getPiece(destination)));
     }
 
     ///////////////////////////////////////////////////////
@@ -297,8 +297,8 @@ public class BoardTest {
         boolean result = instance.isAttackable(coord, color);
         assertEquals(expResult, result);
     }
-    
-        /**
+
+    /**
      * Test of isAttackable method, of class Board.
      */
     @Test

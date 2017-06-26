@@ -25,30 +25,28 @@ public class Board {
             init();
         }
     }
-    
-    private final void init(){
+
+    private final void init() {
         placePieces(Color.BLACK, 0);
         placePawns(Color.BLACK, 1);
-        
-        placePawns(Color.WHITE, MAX_ROWS-2);
-        placePieces(Color.WHITE, MAX_ROWS-1);
-        
+
+        placePawns(Color.WHITE, MAX_ROWS - 2);
+        placePieces(Color.WHITE, MAX_ROWS - 1);
     }
-    
+
     /*Places a full row of pawns of the given color at the given row.*/
-    private final void placePawns(Color color, int row){
-        for(int col = 0; col < MAX_COLUMNS; col++){
-            pieces[MAX_ROWS-2][col] = new Pawn(color);
+    private final void placePawns(Color color, int row) {
+        for (int col = 0; col < MAX_COLUMNS; col++) {
+            pieces[MAX_ROWS - 2][col] = new Pawn(color);
         }
     }
-    
+
     /*Places a normal row of 8 special pieces with the given color and row.*/
-    private final void placePieces(Color color, int row){
+    private final void placePieces(Color color, int row) {
         pieces[row][0] = new Rook(color);
         pieces[row][1] = new Knight(color);
         pieces[row][2] = new Bishop(color);
-        
-        
+
         pieces[row][5] = new Bishop(color);
         pieces[row][6] = new Knight(color);
         pieces[row][7] = new Rook(color);
@@ -61,17 +59,17 @@ public class Board {
      * @param destination the tile on which the moving piece ends
      */
     public void move(Coordinates origin, Coordinates destination) {
-        if (getPiece(origin) == null){
+        if (getPiece(origin) == null) {
             throw new GameException("No piece to move");
         }
-        King piece = (King) getPiece(origin);
+        Piece piece = getPiece(origin);
         piece.update(this, origin);
         List<Coordinates> access = piece.getAccessible();
         List<Coordinates> captur = piece.getCaptureable();
-        if(!access.contains(destination) && !captur.contains(destination)){
+        if (!access.contains(destination) && !captur.contains(destination)) {
             throw new GameException("Spot is not reachable");
         }
-        
+
         pieces[origin.getRow()][origin.getColumn()] = null;
         pieces[destination.getRow()][destination.getColumn()] = piece;
     }

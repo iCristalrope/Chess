@@ -16,7 +16,7 @@ public class Pawn extends Piece implements Pieceable {
     public Pawn(Color color) {
         super(color);
     }
-    
+
     /**
      * Updates the accessible and captureable lists of the this piece
      *
@@ -24,7 +24,7 @@ public class Pawn extends Piece implements Pieceable {
      * @param coord the coordinates of this piece
      */
     @Override
-    public void update(Board board, Coordinates coord){
-        
+    public void update(Board board, Coordinates coord) {
+
     }
 }

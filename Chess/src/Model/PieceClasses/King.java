@@ -12,7 +12,7 @@ import Model.Pieceable;
  *
  * @author Olivier De Cannière
  */
-public class King extends Piece implements Pieceable{
+public class King extends Piece implements Pieceable {
 
     private static final int[][] DIRECTION_UPDATE = {
         {-1, +0}, {-1, +1}, {+0, +1}, {+1, +1}, {+1, +0}, {+1, -1}, {+0, -1}, {-1, -1}
@@ -26,7 +26,7 @@ public class King extends Piece implements Pieceable{
     public King(Color color) {
         super(color);
     }
-    
+
     /**
      * Updates the accessible and captureable lists of the this piece
      *

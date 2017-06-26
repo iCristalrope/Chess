@@ -22,5 +22,5 @@ public class BishopTest {
         Bishop instance = null;
         instance.update(board, coord);
     }
-    
+
 }
