@@ -14,6 +14,11 @@ public class Board {
 
     public Board() {
         pieces = new Piece[MAX_ROWS][MAX_COLUMNS];
+        init();
+    }
+    
+    private final void init(){
+        
     }
 
     /**
