@@ -12,15 +12,6 @@ public class Bishop extends Piece implements Pieceable {
     private final static int[][] DIRECTION_UPDATE = {{1, 1}, {-1, 1}, {-1, -1}, {1, -1}};
 
     /**
-     * Creates a bishop of the specified color
-     *
-     * @param color the color of the bishop
-     */
-    public Bishop(Color color) {
-        this.color = color;
-    }
-
-    /**
      * Updates the accessible and captureable lists of the this piece
      *
      * @param board the board containing the pieces
