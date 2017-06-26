@@ -30,22 +30,21 @@ public class Bishop extends Piece implements Pieceable {
     public void update(Board board, Coordinates coord) {
         accessible.clear();
         captureable.clear();
-        
+
         Coordinates coord2;
-        int row, col;
+        
         for (int[] directionUpdate : DIRECTION_UPDATE) {
-            row = coord.getRow();
-            col = coord.getColumn();
+            coord2 = new Coordinates(coord.getRow() + directionUpdate[0], coord.getColumn() + directionUpdate[1]);
             
-            //haut droite
-            while (col < MAX_COLUMNS && row < MAX_ROWS) {
-                coord2 = new Coordinates(row, col);
-                if (board.getPiece(coord2) != null) {
+            while(isOnBoard(coord2)){
+                if(board.getPiece(coord2) == null){
                     accessible.add(coord2);
+                } else if (board.isAttackable(coord2, color)){
+                    captureable.add(coord2);
                     break;
                 }
+                coord2 = new Coordinates(coord2.getRow() + directionUpdate[0], coord2.getColumn() + directionUpdate[1]);
             }
-            
         }
     }
 }
