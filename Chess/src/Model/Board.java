@@ -25,9 +25,33 @@ public class Board {
             init();
         }
     }
-
-    private final void init() {
-
+    
+    private final void init(){
+        placePieces(Color.BLACK, 0);
+        placePawns(Color.BLACK, 1);
+        
+        placePawns(Color.WHITE, MAX_ROWS-2);
+        placePieces(Color.WHITE, MAX_ROWS-1);
+        
+    }
+    
+    /*Places a full row of pawns of the given color at the given row.*/
+    private final void placePawns(Color color, int row){
+        for(int col = 0; col < MAX_COLUMNS; col++){
+            pieces[MAX_ROWS-2][col] = new Pawn(color);
+        }
+    }
+    
+    /*Places a normal row of 8 special pieces with the given color and row.*/
+    private final void placePieces(Color color, int row){
+        pieces[row][0] = new Rook(color);
+        pieces[row][1] = new Knight(color);
+        pieces[row][2] = new Bishop(color);
+        
+        
+        pieces[row][5] = new Bishop(color);
+        pieces[row][6] = new Knight(color);
+        pieces[row][7] = new Rook(color);
     }
 
     /**

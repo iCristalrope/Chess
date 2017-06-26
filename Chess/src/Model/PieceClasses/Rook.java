@@ -1,12 +1,9 @@
 package Model.PieceClasses;
 
 import Model.Board;
-import Model.Color;
-import Model.Coordinates;
-import Model.Piece;
+import Model.*;
 import java.util.ArrayList;
 import java.util.List;
-import Model.Pieceable;
 
 /**
  * Class representing the rook

@@ -49,4 +49,3 @@ public class Knight extends Piece implements Pieceable {
         }
     }
 }
-
