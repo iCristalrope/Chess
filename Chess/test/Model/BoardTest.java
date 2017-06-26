@@ -8,9 +8,6 @@ import static org.junit.Assert.*;
  * @author Olivier De Cannière
  */
 public class BoardTest {
-    
-    public BoardTest() {
-    }
 
     /**
      * Test of move method, of class Board.

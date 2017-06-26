@@ -3,24 +3,22 @@ package Model;
 /**
  * Indicates conditions that a reasonable game might want to catch.
  *
- * @author Philippe
+ * @author esiProf
  */
 public class GameException extends RuntimeException {
 
     /**
-     * Creates a new instance of <code>GameException</code> without detail
-     * message.
+     * Creates a new instance of <code>GameException</code> without detail message.
      */
-    public GameException() {
+    GameException() {
     }
 
     /**
-     * Constructs an instance of <code>GameException</code> with the specified
-     * detail message.
+     * Constructs an instance of <code>GameException</code> with the specified detail message.
      *
      * @param msg the detail message.
      */
-    public GameException(String msg) {
+    GameException(String msg) {
         super(msg);
     }
 }

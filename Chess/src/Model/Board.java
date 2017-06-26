@@ -20,7 +20,6 @@ public class Board {
     }
     
     private final void init(){
-        //putPiece(Piece piece, Coordinates coord)
         placePieces(Color.BLACK, 0);
         placePawns(Color.BLACK, 1);
         
@@ -60,13 +59,58 @@ public class Board {
     }
 
     /**
+     * Places a piece on the board if the specified spot is free
+     *
+     * @param piece the piece to place
+     * @param coord the coordinates of the spot on which to place the piece
+     * @throws GameException if piece or coord are null if the coordinates point to a spot outside the board if the spot
+     * is not free
+     */
+    public void putPiece(Piece piece, Coordinates coord) throws GameException {
+        if (piece == null || coord == null) {
+            throw new GameException("piece to put or the coordinates are null");
+        }
+        if (!isOnBoard(coord)) {
+            throw new GameException("coord is not on the board");
+        }
+        if (pieces[coord.getRow()][coord.getColumn()] != null) {
+            throw new GameException("The spot is not free");
+        }
+
+        pieces[coord.getRow()][coord.getColumn()] = piece;
+    }
+
+    /**
      * Returns a piece at a position on the board
      *
      * @param coord the position of the piece to return
      * @return the piece at coord
      */
-    public Piece getPiece(Coordinates coord) {
+    public Piece getPiece(Coordinates coord) throws GameException {
+        if (coord == null) {
+            throw new GameException("the coordinates are null");
+        }
+        if (!isOnBoard(coord)) {
+            throw new GameException("coord is not on the board");
+        }
+        
         return this.pieces[coord.getRow()][coord.getColumn()];
+    }
+
+    public Piece removePiece(Coordinates coord) throws GameException {
+        if (coord == null) {
+            throw new GameException("the coordinates are null");
+        }
+        if (!isOnBoard(coord)) {
+            throw new GameException("coord is not on the board");
+        }
+        if (pieces[coord.getRow()][coord.getColumn()] == null) {
+            throw new GameException("No piece to remove");
+        }
+
+        Piece p = pieces[coord.getRow()][coord.getColumn()];
+        pieces[coord.getRow()][coord.getColumn()] = null;
+        return p;
     }
 
     /**
@@ -79,8 +123,7 @@ public class Board {
         return coord.getRow() >= 0 && coord.getRow() <= MAX_ROWS - 1 && coord.getColumn() >= 0
                 && coord.getColumn() <= MAX_COLUMNS - 1;
     }
-    
-    
+
     /**
      * Checks if a position is attackable by a piece of a certain color. Uses the isOnBoard method
      *
@@ -91,4 +134,6 @@ public class Board {
     public boolean isAttackable(Coordinates coord, Color color) {
         return (isOnBoard(coord) && getPiece(coord) != null && getPiece(coord).getColor() != color);
     }
+
+    //TODO toString 
 }
