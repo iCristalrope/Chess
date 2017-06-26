@@ -1,62 +1,41 @@
 package Model.PieceClasses;
 
-import Model.Board;
-import Model.Color;
-import Model.Coordinates;
-import Model.Pieceable;
+import Model.*;
 import static Model.Board.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
  * @author Philippe
  */
-public class Bishop implements Pieceable {
+public class Bishop extends Piece implements Pieceable {
 
-    private Color color;
-
-    public Bishop(Color color) {
-        this.color = color;
-    }
+    private final static int[][] DIRECTION_UPDATE = {{1, 1}, {-1, 1}, {-1, -1}, {1, -1}};
 
     /**
-     * Getter of color attributes.
+     * Updates the accessible and captureable lists of the this piece
      *
-     * @return the color
+     * @param board the board containing the pieces
+     * @param coord the coordinates of this piece
      */
-    public Color getColor() {
-        return this.color;
-    }
+    @Override
+    public void update(Board board, Coordinates coord) {
+        accessible.clear();
+        captureable.clear();
 
-    public static List<Coordinates> accessible(Coordinates pos, Board board) {
-        List<Coordinates> accessible = new ArrayList<>();
-        Coordinates otherPos;
-        int col = pos.getColumn(), row = pos.getRow();
+        Coordinates coord2;
         
-        //haut droite
-        while ( col < MAX_COLUMNS && row < MAX_ROWS) {
-            otherPos = new Coordinates(row, col);
-            if (board.getPiece(otherPos) != null) {
-                accessible.add(otherPos);
-                break;
-            }
-            update();
-        }
-        col = pos.getColumn();
-        row = pos.getRow();
-        //bas droite 
-        for (; col < MAX_COLUMNS && row < MAX_ROWS; col++, row--) {
-            otherPos = new Coordinates(row, col);
-            if (board.getPiece(otherPos) != null) {
-                accessible.add(otherPos);
-                break;
+        for (int[] directionUpdate : DIRECTION_UPDATE) {
+            coord2 = new Coordinates(coord.getRow() + directionUpdate[0], coord.getColumn() + directionUpdate[1]);
+            
+            while(isOnBoard(coord2)){
+                if(board.getPiece(coord2) == null){
+                    accessible.add(coord2);
+                } else if (board.isAttackable(coord2, color)){
+                    captureable.add(coord2);
+                    break;
+                }
+                coord2 = new Coordinates(coord2.getRow() + directionUpdate[0], coord2.getColumn() + directionUpdate[1]);
             }
         }
-        return accessible;
-    }
-    
-    public static List<Coordinates> captureable(Coordinates pos, Board board){
-        return null;
     }
 }
