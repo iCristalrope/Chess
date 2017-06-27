@@ -67,4 +67,8 @@ public class Coordinates {
         }
         return true;
     }
+
+    public String toString() {
+        return "(" + row + ", " + column + ")";
+    }
 }

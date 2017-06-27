@@ -9,8 +9,8 @@ import static Model.Board.*;
  * @author Olivier De Cannière
  */
 public class Rook extends Piece implements Pieceable {
-    
-    private final static int[][] DIRECTION_UPDATE = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+
+    private final static int[][] DIRECTION_UPDATE = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
 
     /**
      * Creates a Rook of the specified color
@@ -42,6 +42,8 @@ public class Rook extends Piece implements Pieceable {
                     accessible.add(coord2);
                 } else if (board.isAttackable(coord2, color)) {
                     captureable.add(coord2);
+                    break;
+                } else {
                     break;
                 }
                 coord2 = new Coordinates(coord2.getRow() + directionUpdate[0], coord2.getColumn() + directionUpdate[1]);

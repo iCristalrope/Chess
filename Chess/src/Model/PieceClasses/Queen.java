@@ -42,6 +42,8 @@ public class Queen extends Piece implements Pieceable {
                 } else if (board.isAttackable(coord2, color)) {
                     captureable.add(coord2);
                     break;
+                } else {
+                    break;
                 }
                 coord2 = new Coordinates(coord2.getRow() + directionUpdate[0], coord2.getColumn() + directionUpdate[1]);
             }

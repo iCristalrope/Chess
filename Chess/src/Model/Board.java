@@ -15,6 +15,7 @@ public class Board {
 
     Piece[][] pieces;
 
+    //TODO proposer méthode créer board vide
     public Board() {
         this(false);
     }
@@ -26,7 +27,8 @@ public class Board {
         }
     }
 
-    private final void init() {
+    /*Puts the pieces needed to start a new game*/
+    private void init() {
         placePieces(Color.BLACK, 0);
         placePawns(Color.BLACK, 1);
 
@@ -35,14 +37,14 @@ public class Board {
     }
 
     /*Places a full row of pawns of the given color at the given row.*/
-    private final void placePawns(Color color, int row) {
+    private void placePawns(Color color, int row) {
         for (int col = 0; col < MAX_COLUMNS; col++) {
             pieces[row][col] = new Pawn(color);
         }
     }
 
     /*Places a normal row of 8 special pieces with the given color and row.*/
-    private final void placePieces(Color color, int row) {
+    private void placePieces(Color color, int row) {
         pieces[row][0] = new Rook(color);
         pieces[row][1] = new Knight(color);
         pieces[row][2] = new Bishop(color);
@@ -60,7 +62,7 @@ public class Board {
      * @param destination the tile on which the moving piece ends
      */
     public void move(Coordinates origin, Coordinates destination) {
-        if (origin == null || destination == null){
+        if (origin == null || destination == null) {
             throw new GameException("origin or destination coordinates are null");
         }
         if (getPiece(origin) == null) {
@@ -117,6 +119,7 @@ public class Board {
         return this.pieces[coord.getRow()][coord.getColumn()];
     }
 
+    //TODO javadoc remove Piece
     public Piece removePiece(Coordinates coord) throws GameException {
         if (coord == null) {
             throw new GameException("the coordinates are null");
@@ -161,11 +164,7 @@ public class Board {
         for (Piece[] piece : pieces) {
             for (Piece piece1 : piece) {
                 if (piece1 != null) {
-                    if (piece1.getColor() == Color.BLACK) {
-                        str += "B";
-                    } else {
-                        str += "W";
-                    }
+                    str += piece1.getColor().toString().charAt(0);
 
                     str += piece1.getClass().getSimpleName().substring(0, 2) + " ";
                 } else {
