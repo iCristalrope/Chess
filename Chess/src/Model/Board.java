@@ -163,28 +163,8 @@ public class Board {
                     } else {
                         str += "W";
                     }
-                    
-                    String ts = piece1.toString();
-                    switch (ts.substring(ts.length() - 4)) {
-                        case "King":
-                            str += "KI";
-                            break;
-                        case "ueen":
-                            str += "QU";
-                            break;
-                        case "shop":
-                            str += "BI";
-                            break;
-                        case "Rook":
-                            str += "RO";
-                            break;
-                        case "ight":
-                            str += "KN";
-                            break;
-                        default:
-                            str += "PA";
-                    }
-                    str += " ";
+           
+                    str += piece1.getClass().getSimpleName().substring(0, 2) + " ";
                 } else {
                     str += "NUL ";
                 }
