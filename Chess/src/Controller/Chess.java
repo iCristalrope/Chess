@@ -23,5 +23,7 @@ public class Chess {
 
         ConsoleDisplayBoard.init();
         ConsoleDisplayBoard.draw(board);
+        
+        
     }
 }
