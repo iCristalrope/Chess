@@ -17,7 +17,7 @@ public class Chess {
         Board board = new Board(true);
         Piece piece = new King(Color.WHITE);
         board.putPiece(piece, new Coordinates(0, 1));
-        System.out.println(board.toString());
+        System.out.println(board);
         board.move(new Coordinates(0, 1), new Coordinates(0, 2));
         System.out.println(board.toString());
     }

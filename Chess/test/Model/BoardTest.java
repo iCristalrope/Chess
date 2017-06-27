@@ -22,9 +22,13 @@ public class BoardTest {
         instance.putPiece(new King(Color.BLACK), origin);
         instance.move(origin, destination);
         System.out.println(instance);
-        assertTrue(new King(Color.BLACK).equals(instance.getPiece(destination)));
+        assertTrue(instance.getPiece(origin) == null);
+        Piece king = new King(Color.BLACK);
+        assertTrue(king.equals(instance.getPiece(destination)));
     }
 
+    //TODO exceptions move
+    
     ///////////////////////////////////////////////////////
     /**
      * Test of putPiece method, of class Board.
