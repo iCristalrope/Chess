@@ -81,6 +81,7 @@ public class PawnTest {
         assertEquals(acc, instance.getAccessible());
         assertEquals(cap, instance.getCaptureable());
     }
+
     /**
      * Test of update method, of class Pawn.
      */
@@ -100,8 +101,6 @@ public class PawnTest {
         List<Coordinates> acc = new ArrayList<>();
         List<Coordinates> cap = new ArrayList<>();
 
-        acc.add(new Coordinates(4, 3));
-
         assertEquals(acc, instance.getAccessible());
         assertEquals(cap, instance.getCaptureable());
     }
@@ -110,8 +109,8 @@ public class PawnTest {
      * Test of update method, of class Pawn.
      */
     @Test
-    public void testUpdate_caseOnlyEnemies() {
-        System.out.println("update_caseOnlyEnemies");
+    public void testUpdate_caseOnlyEnemiesWhite() {
+        System.out.println("update_caseOnlyEnemiesWhite");
         Board board = new Board(true);
         Coordinates coord = new Coordinates(3, 3);
         Pawn instance = new Pawn(Color.WHITE);
@@ -125,9 +124,170 @@ public class PawnTest {
         List<Coordinates> acc = new ArrayList<>();
         List<Coordinates> cap = new ArrayList<>();
 
-        acc.add(new Coordinates(2, 3));
         cap.add(new Coordinates(2, 4));
         cap.add(new Coordinates(2, 2));
+
+        assertEquals(acc, instance.getAccessible());
+        assertEquals(cap, instance.getCaptureable());
+    }
+
+    /**
+     * Test of update method, of class Pawn.
+     */
+    @Test
+    public void testUpdate_caseOnlyEnemiesBlack() {
+        System.out.println("update_caseOnlyEnemiesBlack");
+        Board board = new Board(true);
+        Coordinates coord = new Coordinates(3, 3);
+        Pawn instance = new Pawn(Color.BLACK);
+
+        board.putPiece(new Knight(Color.WHITE), new Coordinates(4, 2));
+        board.putPiece(new Knight(Color.WHITE), new Coordinates(4, 3));
+        board.putPiece(new Knight(Color.WHITE), new Coordinates(4, 4));
+
+        instance.update(board, coord);
+
+        List<Coordinates> acc = new ArrayList<>();
+        List<Coordinates> cap = new ArrayList<>();
+
+        cap.add(new Coordinates(4, 4));
+        cap.add(new Coordinates(4, 2));
+
+        assertEquals(acc, instance.getAccessible());
+        assertEquals(cap, instance.getCaptureable());
+    }
+
+    /**
+     * Test of update method, of class Pawn.
+     */
+    @Test
+    public void testUpdate_caseAlliesEnemiesNullWhite() {
+        System.out.println("update_caseAlliesEnemiesNullWhite");
+        Board board = new Board(true);
+        Coordinates coord = new Coordinates(3, 3);
+        Pawn instance = new Pawn(Color.WHITE);
+
+        board.putPiece(new Knight(Color.WHITE), new Coordinates(2, 2));
+        board.putPiece(new Knight(Color.BLACK), new Coordinates(2, 4));
+
+        instance.update(board, coord);
+
+        List<Coordinates> acc = new ArrayList<>();
+        List<Coordinates> cap = new ArrayList<>();
+
+        acc.add(new Coordinates(2, 3));
+        cap.add(new Coordinates(2, 4));
+
+        assertEquals(acc, instance.getAccessible());
+        assertEquals(cap, instance.getCaptureable());
+    }
+
+    /**
+     * Test of update method, of class Pawn.
+     */
+    @Test
+    public void testUpdate_caseAlliesEnemiesNullBlack() {
+        System.out.println("update_caseAlliesEnemiesNullBlack");
+        Board board = new Board(true);
+        Coordinates coord = new Coordinates(3, 3);
+        Pawn instance = new Pawn(Color.BLACK);
+
+        board.putPiece(new Knight(Color.WHITE), new Coordinates(4, 2));
+        board.putPiece(new Knight(Color.BLACK), new Coordinates(4, 4));
+
+        instance.update(board, coord);
+
+        List<Coordinates> acc = new ArrayList<>();
+        List<Coordinates> cap = new ArrayList<>();
+
+        acc.add(new Coordinates(4, 3));
+        cap.add(new Coordinates(4, 2));
+
+        assertEquals(acc, instance.getAccessible());
+        assertEquals(cap, instance.getCaptureable());
+    }
+
+    /**
+     * Test of update method, of class Pawn.
+     */
+    @Test
+    public void testUpdate_caseUpBordWhite() {
+        System.out.println("update_caseUpBordWhite");
+        Board board = new Board(true);
+        Coordinates coord = new Coordinates(0, 0);
+        Pawn instance = new Pawn(Color.WHITE);
+
+        instance.update(board, coord);
+
+        List<Coordinates> acc = new ArrayList<>();
+        List<Coordinates> cap = new ArrayList<>();
+
+        assertEquals(acc, instance.getAccessible());
+        assertEquals(cap, instance.getCaptureable());
+    }
+
+    /**
+     * Test of update method, of class Pawn.
+     */
+    @Test
+    public void testUpdate_caseUpBordBlack() {
+        System.out.println("update_caseUpBordBlack");
+        Board board = new Board(true);
+        Coordinates coord = new Coordinates(7, 0);
+        Pawn instance = new Pawn(Color.BLACK);
+
+        instance.update(board, coord);
+
+        List<Coordinates> acc = new ArrayList<>();
+        List<Coordinates> cap = new ArrayList<>();
+
+        assertEquals(acc, instance.getAccessible());
+        assertEquals(cap, instance.getCaptureable());
+    }
+
+    /**
+     * Test of update method, of class Pawn.
+     */
+    @Test
+    public void testUpdate_caseSideBordWhite() {
+        System.out.println("update_caseSideBordWhite");
+        Board board = new Board(true);
+        Coordinates coord = new Coordinates(3, 0);
+        Pawn instance = new Pawn(Color.WHITE);
+
+        board.putPiece(new Knight(Color.BLACK), new Coordinates(2, 1));
+
+        instance.update(board, coord);
+
+        List<Coordinates> acc = new ArrayList<>();
+        List<Coordinates> cap = new ArrayList<>();
+
+        acc.add(new Coordinates(2, 0));
+        cap.add(new Coordinates(2, 1));
+
+        assertEquals(acc, instance.getAccessible());
+        assertEquals(cap, instance.getCaptureable());
+    }
+
+    /**
+     * Test of update method, of class Pawn.
+     */
+    @Test
+    public void testUpdate_caseSideBordBlack() {
+        System.out.println("update_caseSideBordBlack");
+        Board board = new Board(true);
+        Coordinates coord = new Coordinates(3, 0);
+        Pawn instance = new Pawn(Color.BLACK);
+
+        board.putPiece(new Knight(Color.WHITE), new Coordinates(4, 1));
+
+        instance.update(board, coord);
+
+        List<Coordinates> acc = new ArrayList<>();
+        List<Coordinates> cap = new ArrayList<>();
+
+        acc.add(new Coordinates(4, 0));
+        cap.add(new Coordinates(4, 1));
 
         assertEquals(acc, instance.getAccessible());
         assertEquals(cap, instance.getCaptureable());
