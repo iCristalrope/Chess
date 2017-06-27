@@ -10,7 +10,7 @@ import static Model.Board.*;
  */
 public class Rook extends Piece implements Pieceable {
 
-    private final static int[][] DIRECTION_UPDATE = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+    private final static int[][] DIRECTION_UPDATE = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
 
     /**
      * Creates a Rook of the specified color
