@@ -1,11 +1,7 @@
 package Model.PieceClasses;
 
-import Model.Board;
-import static Model.Board.isOnBoard;
-import Model.Color;
-import Model.Coordinates;
-import Model.Piece;
-import Model.Pieceable;
+import Model.*;
+import static Model.Board.*;
 
 /**
  * Class representing the king piece

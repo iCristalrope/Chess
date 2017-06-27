@@ -37,7 +37,7 @@ public class Board {
     /*Places a full row of pawns of the given color at the given row.*/
     private final void placePawns(Color color, int row) {
         for (int col = 0; col < MAX_COLUMNS; col++) {
-            pieces[MAX_ROWS - 2][col] = new Pawn(color);
+            pieces[row][col] = new Pawn(color);
         }
     }
 
@@ -46,7 +46,8 @@ public class Board {
         pieces[row][0] = new Rook(color);
         pieces[row][1] = new Knight(color);
         pieces[row][2] = new Bishop(color);
-
+        pieces[row][3] = new Queen(color);
+        pieces[row][4] = new King(color);
         pieces[row][5] = new Bishop(color);
         pieces[row][6] = new Knight(color);
         pieces[row][7] = new Rook(color);
@@ -162,7 +163,7 @@ public class Board {
                     } else {
                         str += "W";
                     }
-           
+
                     str += piece1.getClass().getSimpleName().substring(0, 2) + " ";
                 } else {
                     str += "NUL ";
