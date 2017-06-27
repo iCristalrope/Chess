@@ -7,9 +7,9 @@ package View;
  */
 public enum DisplayColor {
     BLACK("0"),
-    RED("0;31"),
-    GREEN("0;32"),
-    BLUE("0;34"),
+    RED("31"),
+    GREEN("32"),
+    BLUE("34"),
     BCKGRD_YELLOW("43"),
     BCKGRD_BLUE("44"),
     BCKGRD_MAGENTA("45"),
@@ -27,10 +27,20 @@ public enum DisplayColor {
      *
      * @param string the string to change the color of
      * @param fore the color to set to the foreground
+     * @return
+     */
+    public static String toColorForgrnd(String string, DisplayColor fore) {
+        return "\033[" + fore.CODE + "m" + string + "\033[0m";
+    }
+
+    /**
+     * Method allowing to change the fore- and background color of a String received
+     *
+     * @param string the string to change the color of
      * @param back the color to set to the background
      * @return
      */
-    public static String toColor(String string, DisplayColor fore, DisplayColor back) {
-        return "\033[" + fore.CODE + ";" + back.CODE + "m" + string + "\033[0;39m";
+    public static String toColorBckgrnd(String string, DisplayColor back) {
+        return "\033[" + back.CODE + "m" + string + "\033[049m";
     }
 }
