@@ -1,8 +1,6 @@
 package Model.PieceClasses;
 
-import Model.Board;
-import Model.Color;
-import Model.Coordinates;
+import Model.*;
 import java.util.ArrayList;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -21,8 +19,8 @@ public class KingTest {
      * Test of update method, of class King.
      */
     @Test
-    public void testUpdate_casVide() {
-        System.out.println("testUpdate_casVide");
+    public void testUpdate_caseEmpty() {
+        System.out.println("testUpdate_caseEmpty");
         Board board = new Board(true);
         Coordinates coord = new Coordinates(5, 5);
         King instance = new King(Color.WHITE);
@@ -48,8 +46,8 @@ public class KingTest {
      * Test of update method, of class King.
      */
     @Test
-    public void testUpdate_casCoin() {
-        System.out.println("testUpdate_casCoin");
+    public void testUpdate_caseCorner() {
+        System.out.println("testUpdate_caseCorner");
         Board board = new Board(true);
         Coordinates coord = new Coordinates(0, 0);
         King instance = new King(Color.WHITE);
@@ -70,8 +68,8 @@ public class KingTest {
      * Test of update method, of class King.
      */
     @Test
-    public void testUpdate_casQueEnemis() {
-        System.out.println("testUpdate_casQueEnemis");
+    public void testUpdate_caseOnlyEnemies() {
+        System.out.println("testUpdate_caseOnlyEnemies");
         Board board = new Board(true);
         Coordinates coord = new Coordinates(5, 5);
         King instance = new King(Color.WHITE);
@@ -105,8 +103,8 @@ public class KingTest {
      * Test of update method, of class King.
      */
     @Test
-    public void testUpdate_casQueAllies() {
-        System.out.println("testUpdate_casQueAllies");
+    public void testUpdate_caseOnlyAllies() {
+        System.out.println("testUpdate_caseOnlyAllies");
         Board board = new Board(true);
         Coordinates coord = new Coordinates(5, 5);
         King instance = new King(Color.WHITE);
@@ -132,8 +130,8 @@ public class KingTest {
      * Test of update method, of class King.
      */
     @Test
-    public void testUpdate_casMixteNullAlliesEnemis() {
-        System.out.println("testUpdate_casMixteNullAlliesEnemis");
+    public void testUpdate_caseMixteNullAlliesEnemies() {
+        System.out.println("testUpdate_caseMixteNullAlliesEnemies");
         Board board = new Board(true);
         Coordinates coord = new Coordinates(5, 5);
         King instance = new King(Color.WHITE);
@@ -144,8 +142,6 @@ public class KingTest {
         board.putPiece(new Knight(Color.BLACK), new Coordinates(6, 6));
         board.putPiece(new Knight(Color.WHITE), new Coordinates(6, 5));
         board.putPiece(new Knight(Color.WHITE), new Coordinates(6, 4));
-        //board.putPiece(new Knight(Color.WHITE), new Coordinates(5, 4));
-        //board.putPiece(new Knight(Color.WHITE), new Coordinates(4, 4));
         instance.update(board, coord);
 
         ArrayList<Coordinates> acc = new ArrayList<>();

@@ -10,7 +10,7 @@ import static Model.Board.*;
  */
 public class Bishop extends Piece implements Pieceable {
 
-    private final static int[][] DIRECTION_UPDATE = {{1, 1}, {-1, 1}, {-1, -1}, {1, -1}};
+    private final static int[][] DIRECTION_UPDATE = {{-1, 1}, {1, 1}, {1, -1}, {-1, -1}};
 
     /**
      * Creates a bishop of the specified color
@@ -42,6 +42,8 @@ public class Bishop extends Piece implements Pieceable {
                     accessible.add(coord2);
                 } else if (board.isAttackable(coord2, color)) {
                     captureable.add(coord2);
+                    break;
+                } else {
                     break;
                 }
                 coord2 = new Coordinates(coord2.getRow() + directionUpdate[0], coord2.getColumn() + directionUpdate[1]);
