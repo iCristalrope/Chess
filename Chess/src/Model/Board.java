@@ -60,6 +60,9 @@ public class Board {
      * @param destination the tile on which the moving piece ends
      */
     public void move(Coordinates origin, Coordinates destination) {
+        if (origin == null || destination == null){
+            throw new GameException("origin or destination coordinates are null");
+        }
         if (getPiece(origin) == null) {
             throw new GameException("No piece to move");
         }
