@@ -15,7 +15,6 @@ public class Board {
 
     Piece[][] pieces;
 
-    //TODO proposer méthode créer board vide
     public Board() {
         this(false);
     }
