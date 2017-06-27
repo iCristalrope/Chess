@@ -22,7 +22,74 @@ public class BoardTest {
         instance.putPiece(new King(Color.BLACK), origin);
         instance.move(origin, destination);
         System.out.println(instance);
-        assertTrue(new King(Color.BLACK).equals(instance.getPiece(destination)));
+        assertTrue(instance.getPiece(origin) == null);
+        Piece king = new King(Color.BLACK);
+
+        assertTrue(king.equals(instance.getPiece(destination)));
+    }
+
+    /**
+     * Test of move method, of class Board.
+     */
+    @Test
+    public void testMove_bords() {
+        Coordinates origin = new Coordinates(0, 0);
+        Coordinates destination = new Coordinates(0, 7);
+        Board instance = new Board(true);
+        instance.putPiece(new Rook(Color.BLACK), origin);
+        instance.move(origin, destination);
+        assertTrue(instance.getPiece(origin) == null);
+        Piece piece = new Rook(Color.BLACK);
+        assertTrue(piece.equals(instance.getPiece(destination)));
+    }
+
+    /**
+     * Test of move method, of class Board.
+     */
+    @Test(expected = GameException.class)
+    public void testMove_originNull() {
+        Coordinates origin = null;
+        Coordinates destination = new Coordinates(0, 7);
+        Board instance = new Board(true);
+
+        instance.move(origin, destination);
+    }
+
+    /**
+     * Test of move method, of class Board.
+     */
+    @Test(expected = GameException.class)
+    public void testMove_destinationNull() {
+        Coordinates origin = new Coordinates(0, 0);
+        Coordinates destination = null;
+        Board instance = new Board(true);
+
+        instance.move(origin, destination);
+    }
+
+    /**
+     * Test of move method, of class Board.
+     */
+    @Test(expected = GameException.class)
+    public void testMove_originPieceNull() {
+        Coordinates origin = new Coordinates(0, 0);
+        Coordinates destination = new Coordinates(0, 7);
+        Board instance = new Board(true);
+
+        instance.move(origin, destination);
+    }
+
+    /**
+     * Test of move method, of class Board.
+     */
+    @Test(expected = GameException.class)
+    public void testMove_unreacheableDestination() {
+        Coordinates origin = new Coordinates(0, 0);
+        Coordinates destination = new Coordinates(1, 7);
+        Board instance = new Board(true);
+        instance.putPiece(new Rook(Color.BLACK), origin);
+
+        instance.move(origin, destination);
     }
 
     ///////////////////////////////////////////////////////
@@ -313,5 +380,4 @@ public class BoardTest {
         boolean result = instance.isAttackable(coord, color);
         assertEquals(expResult, result);
     }
-
 }

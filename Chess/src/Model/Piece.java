@@ -63,10 +63,8 @@ public abstract class Piece {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 79 * hash + Objects.hashCode(this.color);
-        hash = 79 * hash + Objects.hashCode(this.accessible);
-        hash = 79 * hash + Objects.hashCode(this.captureable);
+        int hash = 5;
+        hash = 31 * hash + Objects.hashCode(this.color);
         return hash;
     }
 
@@ -83,12 +81,6 @@ public abstract class Piece {
         }
         final Piece other = (Piece) obj;
         if (this.color != other.color) {
-            return false;
-        }
-        if (!Objects.equals(this.accessible, other.accessible)) {
-            return false;
-        }
-        if (!Objects.equals(this.captureable, other.captureable)) {
             return false;
         }
         return true;
