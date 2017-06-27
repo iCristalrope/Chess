@@ -1,5 +1,6 @@
 package Controller;
 
+import View.*;
 import Model.*;
 import Model.PieceClasses.*;
 
@@ -12,12 +13,15 @@ public class Chess {
 
     public static void main(String[] args) {
         Board board = new Board(true);
-        Piece piece = new King(Color.WHITE);
+        /* Piece piece = new King(Color.WHITE);
         board.putPiece(piece, new Coordinates(0, 1));
         System.out.println(board);
         board.move(new Coordinates(0, 1), new Coordinates(0, 2));
         System.out.println(board);
         board = new Board();
-        System.out.println(board);
+        System.out.println(board);*/
+
+        ConsoleDisplayBoard.init();
+        ConsoleDisplayBoard.draw(board);
     }
 }
