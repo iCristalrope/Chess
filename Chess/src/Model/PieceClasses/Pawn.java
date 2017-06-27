@@ -37,9 +37,9 @@ public class Pawn extends Piece implements Pieceable {
             col = coord.getColumn() + directionUpdate[1];
             coord2 = new Coordinates(row, col);
 
-            if (isOnBoard(coord2) && dirUpdt == 0) {
+            if (isOnBoard(coord2) && board.getPiece(coord2) == null && dirUpdt == 0) {
                 accessible.add(coord2);
-            } else if (board.isAttackable(coord2, color)) {
+            } else if (dirUpdt != 0 && board.isAttackable(coord2, color)) {
                 captureable.add(coord2);
             }
 
