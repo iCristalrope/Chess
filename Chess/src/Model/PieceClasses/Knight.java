@@ -1,11 +1,7 @@
 package Model.PieceClasses;
 
+import Model.*;
 import static Model.Board.*;
-import Model.Board;
-import Model.Color;
-import Model.Coordinates;
-import Model.Piece;
-import Model.Pieceable;
 
 /**
  * Class representing the knight piece

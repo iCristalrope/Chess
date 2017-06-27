@@ -46,7 +46,8 @@ public class Board {
         pieces[row][0] = new Rook(color);
         pieces[row][1] = new Knight(color);
         pieces[row][2] = new Bishop(color);
-
+        pieces[row][3] = new Queen(color);
+        pieces[row][4] = new King(color);
         pieces[row][5] = new Bishop(color);
         pieces[row][6] = new Knight(color);
         pieces[row][7] = new Rook(color);
@@ -158,11 +159,11 @@ public class Board {
             for (Piece piece1 : piece) {
                 if (piece1 != null) {
                     if (piece1.getColor() == Color.BLACK) {
-                        str += "W";
-                    } else {
                         str += "B";
+                    } else {
+                        str += "W";
                     }
-
+                    
                     String ts = piece1.toString();
                     switch (ts.substring(ts.length() - 4)) {
                         case "King":

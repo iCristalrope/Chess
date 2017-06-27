@@ -4,20 +4,19 @@ import Model.*;
 import static Model.Board.*;
 
 /**
- * Class representing the rook
  *
- * @author Olivier De Cannière
+ * @author Philippe
  */
-public class Rook extends Piece implements Pieceable {
-    
-    private final static int[][] DIRECTION_UPDATE = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+public class Queen extends Piece implements Pieceable {
+
+    private final static int[][] DIRECTION_UPDATE = {{1, 0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}, {-1, -1}, {0, -1}, {1, -1}};
 
     /**
      * Creates a Rook of the specified color
      *
      * @param color the color of the knight
      */
-    public Rook(Color color) {
+    public Queen(Color color) {
         super(color);
     }
 
