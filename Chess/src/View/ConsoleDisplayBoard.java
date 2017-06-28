@@ -45,12 +45,17 @@ public class ConsoleDisplayBoard {
             }
         }
 
-        for (String[] strings : screen) { // print array
-            for (String string : strings) {
-                System.out.print(string);
+        //showBoard
+        System.out.println("    A    B    C    D    E    F    G    H");
+        for (int i = 0; i < screen.length; i++) { // print array
+            numberLine(i);
+            for (String item : screen[i]) {
+                System.out.print(item);
             }
+            numberLine(i);
             System.out.println();
         }
+        System.out.println("    A    B    C    D    E    F    G    H");
     }
 
     /**
@@ -99,7 +104,7 @@ public class ConsoleDisplayBoard {
      */
     private static String tileColored(String str, Coordinates coord) {
         int i = (coord.getRow() * Board.MAX_COLUMNS + coord.getColumn()) % 2;
-        if (coord.getRow() % 2 == 1){
+        if (coord.getRow() % 2 == 1) {
             i++;
         }
         if (i == 1) {
@@ -121,5 +126,18 @@ public class ConsoleDisplayBoard {
             str = DisplayColor.toColorForgrnd(str, DisplayColor.WHITE);
         }
         return str;
+    }
+
+    /**
+     * prints the number of the line or just spaces
+     *
+     * @param i
+     */
+    private static void numberLine(int i) {
+        if (i % 2 == 1 && i >= 1) {
+            System.out.print(ROWS_DISPLAY / 2 - i / 2 + " ");
+        } else {
+            System.out.print("  ");
+        }
     }
 }
