@@ -23,6 +23,6 @@ public class Chess {
 
         ConsoleDisplayBoard.init();
         ConsoleDisplayBoard.draw(board);
-        System.out.println("\u001b[43m" + "hello");
+        System.out.println("\033[22m");
     }
 }
