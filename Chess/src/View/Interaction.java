@@ -45,55 +45,6 @@ public class Interaction {
     }
 
     /**
-     * Shows a message and tries to read a Species. Once it succeeds, returns it.
-     *
-     * @param msg String to display before asking for the input to help the user understand what he has to enter
-     * @return the Species read from the keyboard
-     */
-    /*public static Species getNextSpecies(String msg) {
-    Species s = Species.GAZELLE;
-    String str;
-    boolean inputOK = false;
-    while (!inputOK) {
-    System.out.print(msg);
-    str = CLAVIER.next();
-    str = str.toLowerCase();
-    
-    inputOK = true;
-    if (null == str) {
-    inputOK = false;
-    System.out.println("Invalid input. Enter a species. You can "
-    + "choose from : Gazelle, Zebra, Crocodile, Lion, "
-    + "Elephant");
-    } else {
-    switch (str) {
-    case "gazelle":
-    s = Species.GAZELLE;
-    break;
-    case "zebra":
-    s = Species.ZEBRA;
-    break;
-    case "crocodile":
-    s = Species.CROCODILE;
-    break;
-    case "lion":
-    s = Species.LION;
-    break;
-    case "elephant":
-    s = Species.ELEPHANT;
-    break;
-    default:
-    inputOK = false;
-    System.out.println("Invalid input. Enter a species. "
-    + "You can choose from : Gazelle, Zebra, "
-    + "Crocodile, Lion, Elephant");
-    break;
-    }
-    }
-    }
-    return s;
-    }*/
-    /**
      * Shows a message and tries to read a Coordinates. Once it succeeds, returns it.
      *
      * @param msg String to display before asking for the input to help the user understand what he has to enter
@@ -112,10 +63,9 @@ public class Interaction {
                 inputOK = true;
                 c = new Coordinates(x, y);
             } else {
-                System.out.println("Invalid input. Row should be in [0, 4] "
-                        + "and column in [0, 5]");
+                System.out.println("Invalid input. Row should be in [0, 4] "+ "and column in [0, 5]");
             }
         }
         return c;
-    }
+    } 
 }
