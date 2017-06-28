@@ -9,6 +9,7 @@ public enum DisplayColor {
     BLACK("0"),
     RED("31"),
     GREEN("32"),
+    YELLOW("33"),
     BLUE("34"),
     WHITE("1;37"),
     BCKGRD_YELLOW("43"),
