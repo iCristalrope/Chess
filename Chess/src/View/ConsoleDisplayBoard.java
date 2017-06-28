@@ -123,7 +123,7 @@ public class ConsoleDisplayBoard {
      */
     private static String pieceColored(String str, Piece piece) {
         if (piece.getColor() == Color.WHITE) {
-            str = DisplayColor.toColorForgrnd(str, DisplayColor.WHITE);
+            str = DisplayColor.toColorForgrnd(str, DisplayColor.RED);
         }
         return str;
     }

@@ -1,6 +1,7 @@
 package Model;
 
 import Model.PieceClasses.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,7 +14,9 @@ public class Board {
     public static final int MAX_ROWS = 8;
     public static final int MAX_COLUMNS = 8;
 
-    Piece[][] pieces;
+    private Piece[][] pieces;
+    private ArrayList<Coordinates> whites;
+    private ArrayList<Coordinates> blacks;
 
     public Board() {
         this(false);
@@ -26,6 +29,24 @@ public class Board {
         }
     }
 
+    /**
+     * getter of attribute whites
+     *
+     * @return whites
+     */
+    public ArrayList<Coordinates> getWhites() {
+        return this.whites;
+    }
+
+    /**
+     * getter of attribute blacks
+     *
+     * @return blacks
+     */
+    public ArrayList<Coordinates> getBlacks() {
+        return this.blacks;
+    }
+
     /*Puts the pieces needed to start a new game*/
     private void init() {
         placePieces(Color.BLACK, 0);
@@ -33,6 +54,19 @@ public class Board {
 
         placePawns(Color.WHITE, MAX_ROWS - 2);
         placePieces(Color.WHITE, MAX_ROWS - 1);
+
+        blacks = new ArrayList<>();
+        whites = new ArrayList<>();
+        for (int i = 0; i < 1; i++) {
+            for (int j = 0; j < MAX_COLUMNS; j++) {
+                blacks.add(new Coordinates(i, j));
+            }
+        }
+        for (int i = MAX_ROWS - 2; i < MAX_ROWS - 1; i++) {
+            for (int j = 0; j < MAX_COLUMNS; j++) {
+                whites.add(new Coordinates(i, j));
+            }
+        }
     }
 
     /*Places a full row of pawns of the given color at the given row.*/
@@ -77,6 +111,13 @@ public class Board {
 
         pieces[origin.getRow()][origin.getColumn()] = null;
         pieces[destination.getRow()][destination.getColumn()] = piece;
+        if (piece.getColor() == Color.WHITE) {
+            whites.remove(origin);
+            whites.add(destination);
+        } else {
+            blacks.remove(origin);
+            blacks.add(destination);
+        }
     }
 
     /**
@@ -155,6 +196,36 @@ public class Board {
      */
     public boolean isAttackable(Coordinates coord, Color color) {
         return (isOnBoard(coord) && getPiece(coord) != null && getPiece(coord).getColor() != color);
+    }
+
+    /**
+     * Checks whether the king at a given position is in check
+     *
+     * @param coord the position of the King
+     * @return true if it is in check, false otherwise
+     */
+    public boolean isKingInCheck(Coordinates coord) {
+        boolean inCheck = false;
+        if (getPiece(coord) == null || !getPiece(coord).getClass().getSimpleName().equals("King")) {
+            throw new GameException("No king at this position");
+        }
+        King king = (King) getPiece(coord);
+        ArrayList<Coordinates> enemies;
+        if (king.getColor() == Color.WHITE) {
+            enemies = (ArrayList<Coordinates>) blacks.clone();
+        } else {
+            enemies = (ArrayList<Coordinates>) whites.clone();
+        }
+
+        for (Coordinates enemy : enemies) {
+            getPiece(enemy).update(this, enemy);
+            if (getPiece(enemy).getCaptureable().contains(coord)) {
+                inCheck = true;
+                break;
+            }
+        }
+
+        return inCheck;
     }
 
     @Override

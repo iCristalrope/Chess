@@ -16,7 +16,7 @@ public class Chess {
         board.move(new Coordinates(1, 4), new Coordinates(2, 4));
         board.move(new Coordinates(0, 5), new Coordinates(3, 2));
         board.move(new Coordinates(0, 3), new Coordinates(4, 7));
-        board.move(new Coordinates(4, 7), new Coordinates(6, 5));
+        board.move(new Coordinates(4, 7), new Coordinates(6, 5)); //coup du berger lel
 
         /* Piece piece = new King(Color.WHITE);
         board.putPiece(piece, new Coordinates(0, 1));
