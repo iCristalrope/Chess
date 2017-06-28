@@ -191,6 +191,36 @@ public class Board {
 
         return inCheck;
     }
+    
+    public boolean isKingCheckMate(Coordinates coord){
+        return isKingInCheck(coord) && !hasKingMoveLeft(coord);
+    }
+    
+    public boolean isKingPat(Coordinates coord){
+        return !isKingInCheck(coord) && !hasKingMoveLeft(coord);
+    }
+    
+    /*Checks if the king has any non check accessible positions left*/
+    private boolean hasKingMoveLeft(Coordinates coord){
+        if (getPiece(coord) == null || !getPiece(coord).getClass().getSimpleName().equals("King")) {
+            throw new GameException("No king at this position");
+        }
+        King king = (King) getPiece(coord);
+        king.update(this, coord);
+        
+        Coordinates save = coord, onMoveSave = coord;
+        boolean hasMove = false;
+        for(Coordinates accessible : king.accessible){
+            move(onMoveSave, accessible);
+            onMoveSave = accessible;
+            if(!isKingInCheck(accessible)){
+                hasMove = true;
+                break;
+            }
+        }
+        move(onMoveSave, save);
+        return hasMove;
+    }
 
     ///////////////////////////////////////////////////////////////////////////////
     /*Puts the pieces needed to start a new game*/
