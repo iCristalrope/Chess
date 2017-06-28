@@ -29,5 +29,6 @@ public class Chess {
         ConsoleDisplayBoard.draw(board);
         System.out.println("King at (0, 4) is in check : " + board.isKingInCheck(new Coordinates(0, 4)));
         System.out.println("King at (7, 4) is in check : " + board.isKingInCheck(new Coordinates(7, 4)));
+        
     }
 }

@@ -47,47 +47,6 @@ public class Board {
         return this.blacks;
     }
 
-    /*Puts the pieces needed to start a new game*/
-    private void init() {
-        placePieces(Color.BLACK, 0);
-        placePawns(Color.BLACK, 1);
-
-        placePawns(Color.WHITE, MAX_ROWS - 2);
-        placePieces(Color.WHITE, MAX_ROWS - 1);
-
-        blacks = new ArrayList<>();
-        whites = new ArrayList<>();
-        for (int i = 0; i < 1; i++) {
-            for (int j = 0; j < MAX_COLUMNS; j++) {
-                blacks.add(new Coordinates(i, j));
-            }
-        }
-        for (int i = MAX_ROWS - 2; i < MAX_ROWS - 1; i++) {
-            for (int j = 0; j < MAX_COLUMNS; j++) {
-                whites.add(new Coordinates(i, j));
-            }
-        }
-    }
-
-    /*Places a full row of pawns of the given color at the given row.*/
-    private void placePawns(Color color, int row) {
-        for (int col = 0; col < MAX_COLUMNS; col++) {
-            pieces[row][col] = new Pawn(color);
-        }
-    }
-
-    /*Places a normal row of 8 special pieces with the given color and row.*/
-    private void placePieces(Color color, int row) {
-        pieces[row][0] = new Rook(color);
-        pieces[row][1] = new Knight(color);
-        pieces[row][2] = new Bishop(color);
-        pieces[row][3] = new Queen(color);
-        pieces[row][4] = new King(color);
-        pieces[row][5] = new Bishop(color);
-        pieces[row][6] = new Knight(color);
-        pieces[row][7] = new Rook(color);
-    }
-
     /**
      * Moves a piece on the board according to the rules and takes the piece at the destination if necessary
      *
@@ -159,7 +118,12 @@ public class Board {
         return this.pieces[coord.getRow()][coord.getColumn()];
     }
 
-    //TODO javadoc remove Piece
+    /**
+     * Returns a piece at a position on the board and clear the position
+     *
+     * @param coord the position of the piece to return
+     * @return the piece at coord
+     */
     public Piece removePiece(Coordinates coord) throws GameException {
         if (coord == null) {
             throw new GameException("the coordinates are null");
@@ -212,9 +176,9 @@ public class Board {
         King king = (King) getPiece(coord);
         ArrayList<Coordinates> enemies;
         if (king.getColor() == Color.WHITE) {
-            enemies = (ArrayList<Coordinates>) blacks.clone();
+            enemies = blacks;
         } else {
-            enemies = (ArrayList<Coordinates>) whites.clone();
+            enemies = whites;
         }
 
         for (Coordinates enemy : enemies) {
@@ -256,6 +220,48 @@ public class Board {
         }
         move(onMoveSave, save);
         return hasMove;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////
+    /*Puts the pieces needed to start a new game*/
+    private void init() {
+        placePieces(Color.BLACK, 0);
+        placePawns(Color.BLACK, 1);
+
+        placePawns(Color.WHITE, MAX_ROWS - 2);
+        placePieces(Color.WHITE, MAX_ROWS - 1);
+
+        blacks = new ArrayList<>();
+        whites = new ArrayList<>();
+        for (int i = 0; i < 1; i++) {
+            for (int j = 0; j < MAX_COLUMNS; j++) {
+                blacks.add(new Coordinates(i, j));
+            }
+        }
+        for (int i = MAX_ROWS - 2; i < MAX_ROWS - 1; i++) {
+            for (int j = 0; j < MAX_COLUMNS; j++) {
+                whites.add(new Coordinates(i, j));
+            }
+        }
+    }
+
+    /*Places a full row of pawns of the given color at the given row.*/
+    private void placePawns(Color color, int row) {
+        for (int col = 0; col < MAX_COLUMNS; col++) {
+            pieces[row][col] = new Pawn(color);
+        }
+    }
+
+    /*Places a normal row of 8 special pieces with the given color and row.*/
+    private void placePieces(Color color, int row) {
+        pieces[row][0] = new Rook(color);
+        pieces[row][1] = new Knight(color);
+        pieces[row][2] = new Bishop(color);
+        pieces[row][3] = new Queen(color);
+        pieces[row][4] = new King(color);
+        pieces[row][5] = new Bishop(color);
+        pieces[row][6] = new Knight(color);
+        pieces[row][7] = new Rook(color);
     }
 
     @Override
