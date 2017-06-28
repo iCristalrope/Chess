@@ -12,7 +12,9 @@ import Model.PieceClasses.*;
 public class Chess {
 
     public static void main(String[] args) {
-        Board board = new Board(true);
+        Board board = new Board();
+        board.move(new Coordinates(1, 1), new Coordinates(2, 1));
+
         /* Piece piece = new King(Color.WHITE);
         board.putPiece(piece, new Coordinates(0, 1));
         System.out.println(board);
@@ -20,9 +22,7 @@ public class Chess {
         System.out.println(board);
         board = new Board();
         System.out.println(board);*/
-
         ConsoleDisplayBoard.init();
         ConsoleDisplayBoard.draw(board);
-        System.out.println("\033[22m");
     }
 }

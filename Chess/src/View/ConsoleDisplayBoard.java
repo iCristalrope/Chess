@@ -2,6 +2,9 @@ package View;
 
 import Model.Board;
 import static Model.Board.*;
+import Model.Color;
+import Model.Coordinates;
+import Model.Piece;
 
 /**
  * Class containing a method to display the board in the console in an enhanced way
@@ -17,13 +20,42 @@ public class ConsoleDisplayBoard {
     private static String[][] screen;
 
     public static void draw(Board board) {
-        for (String[] strings : CLEAR_SCREEN) {
-            for (String string : strings) {
-                System.out.print(string);
+        Piece piece;
+        String str = "";
+
+        screen = CLEAR_SCREEN.clone();
+
+        for (int i = 0; i < MAX_ROWS; i++) {
+            for (int j = 0; j < MAX_COLUMNS; j++) {
+                Coordinates coord = new Coordinates(i, j);
+                piece = board.getPiece(coord);
+
+                str = tileColored(" ", coord);
+                screen[1 + i * 2][1 + j * 5] = str;
+                screen[1 + i * 2][4 + j * 5] = str;
+                if (piece == null) {
+                    screen[1 + i * 2][2 + j * 5] = str;
+                    screen[1 + i * 2][3 + j * 5] = str;
+                } else {
+                    str = tileColored(pieceColored("" + piece.getClass().getSimpleName().charAt(0), piece), coord);
+                    screen[1 + i * 2][2 + j * 5] = str;
+                    str = tileColored(pieceColored("" + piece.getClass().getSimpleName().charAt(1), piece), coord);
+                    screen[1 + i * 2][3 + j * 5] = str;
+                }
             }
+        }
+
+        //showBoard
+        System.out.println("    A    B    C    D    E    F    G    H");
+        for (int i = 0; i < screen.length; i++) { // print array
+            numberLine(i);
+            for (String item : screen[i]) {
+                System.out.print(item);
+            }
+            numberLine(i);
             System.out.println();
         }
-        //TODO pieces
+        System.out.println("    A    B    C    D    E    F    G    H");
     }
 
     /**
@@ -44,7 +76,7 @@ public class ConsoleDisplayBoard {
             }
         }
         for (int i = 0; i < COLS_DISPLAY; i++) {
-            fillLine(ROWS_DISPLAY-1, i, "╚", "═", "╩", "╝");
+            fillLine(ROWS_DISPLAY - 1, i, "╚", "═", "╩", "╝");
         }
     }
 
@@ -62,5 +94,50 @@ public class ConsoleDisplayBoard {
             }
         }
         CLEAR_SCREEN[i][j] = str;
+    }
+
+    /**
+     * Colors a text according to the spot it sits on
+     *
+     * @param coord the spot to check
+     * @return the colored string
+     */
+    private static String tileColored(String str, Coordinates coord) {
+        int i = (coord.getRow() * Board.MAX_COLUMNS + coord.getColumn()) % 2;
+        if (coord.getRow() % 2 == 1) {
+            i++;
+        }
+        if (i == 1) {
+            str = DisplayColor.toColorBckgrnd(str, DisplayColor.BCKGRD_CYAN);
+        } else {
+            str = DisplayColor.toColorBckgrnd(str, DisplayColor.BCKGRD_GREY);
+        }
+        return str;
+    }
+
+    /**
+     * Colors a text according to the spot it sits on
+     *
+     * @param coord the spot to check
+     * @return the colored string
+     */
+    private static String pieceColored(String str, Piece piece) {
+        if (piece.getColor() == Color.WHITE) {
+            str = DisplayColor.toColorForgrnd(str, DisplayColor.WHITE);
+        }
+        return str;
+    }
+
+    /**
+     * prints the number of the line or just spaces
+     *
+     * @param i
+     */
+    private static void numberLine(int i) {
+        if (i % 2 == 1 && i >= 1) {
+            System.out.print(ROWS_DISPLAY / 2 - i / 2 + " ");
+        } else {
+            System.out.print("  ");
+        }
     }
 }

@@ -10,10 +10,12 @@ public enum DisplayColor {
     RED("31"),
     GREEN("32"),
     BLUE("34"),
+    WHITE("1;37"),
     BCKGRD_YELLOW("43"),
     BCKGRD_BLUE("44"),
     BCKGRD_MAGENTA("45"),
     BCKGRD_CYAN("46"),
+    BCKGRD_GREY("47"),
     BCKGRD_WHITE("107");
 
     private final String CODE;
