@@ -39,6 +39,7 @@ public class Pawn extends Piece implements Pieceable {
 
             if (isOnBoard(coord2) && board.getPiece(coord2) == null && dirUpdt == 0) {
                 accessible.add(coord2);
+                //TODO check if free
             } else if (dirUpdt != 0 && board.isAttackable(coord2, color)) {
                 captureable.add(coord2);
             }

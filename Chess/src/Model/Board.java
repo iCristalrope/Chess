@@ -60,6 +60,9 @@ public class Board {
         if (getPiece(origin) == null) {
             throw new GameException("No piece to move");
         }
+        if (origin.equals(destination)){
+            return;
+        }
         Piece piece = getPiece(origin);
         piece.update(this, origin);
         List<Coordinates> access = piece.getAccessible();
@@ -67,7 +70,7 @@ public class Board {
         if (!access.contains(destination) && !captur.contains(destination)) {
             throw new GameException("Spot is not reachable");
         }
-
+        
         pieces[origin.getRow()][origin.getColumn()] = null;
         pieces[destination.getRow()][destination.getColumn()] = piece;
         if (piece.getColor() == Color.WHITE) {

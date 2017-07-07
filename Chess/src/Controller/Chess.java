@@ -18,17 +18,11 @@ public class Chess {
         board.move(new Coordinates(0, 3), new Coordinates(4, 7));
         board.move(new Coordinates(4, 7), new Coordinates(6, 5)); //coup du berger lel
 
-        /* Piece piece = new King(Color.WHITE);
-        board.putPiece(piece, new Coordinates(0, 1));
-        System.out.println(board);
-        board.move(new Coordinates(0, 1), new Coordinates(0, 2));
-        System.out.println(board);
-        board = new Board();
-        System.out.println(board);*/
         ConsoleDisplayBoard.init();
         ConsoleDisplayBoard.draw(board);
+
         System.out.println("King at (0, 4) is in check : " + board.isKingInCheck(new Coordinates(0, 4)));
         System.out.println("King at (7, 4) is in check : " + board.isKingInCheck(new Coordinates(7, 4)));
-        
+        System.out.println("King at (7, 4) is in checkmate : " + board.isKingCheckMate(new Coordinates(7, 4)));
     }
 }
