@@ -13,6 +13,7 @@ public class King extends Piece implements Pieceable {
     private static final int[][] DIRECTION_UPDATE = {
         {-1, +0}, {-1, +1}, {+0, +1}, {+1, +1}, {+1, +0}, {+1, -1}, {+0, -1}, {-1, -1}
     };
+    private boolean hasMoved;
 
     /**
      * Creates a King of the specified color
@@ -43,5 +44,13 @@ public class King extends Piece implements Pieceable {
                 captureable.add(coord2);
             }
         }
+    }
+
+    public boolean getHasMoved() {
+        return hasMoved;
+    }
+
+    public void setHasMoved(boolean hasMoved) {
+        this.hasMoved = hasMoved;
     }
 }

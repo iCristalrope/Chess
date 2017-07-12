@@ -8,7 +8,8 @@ import static Model.Board.*;
  * @author Philippe
  */
 public class Pawn extends Piece implements Pieceable {
-
+    
+    private boolean doubleMove;
     private final static int[][] DIRECTION_UPDATE = {{1, 0}, {1, 1}, {1, -1}};
 
     /**
@@ -46,5 +47,8 @@ public class Pawn extends Piece implements Pieceable {
 
             dirUpdt++;
         }
+        
+        //TODO reecrire double deplacement
+        
     }
 }

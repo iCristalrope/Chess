@@ -11,6 +11,7 @@ import static Model.Board.*;
 public class Rook extends Piece implements Pieceable {
 
     private final static int[][] DIRECTION_UPDATE = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+    private boolean hasMoved;
 
     /**
      * Creates a Rook of the specified color
@@ -49,5 +50,13 @@ public class Rook extends Piece implements Pieceable {
                 coord2 = new Coordinates(coord2.getRow() + directionUpdate[0], coord2.getColumn() + directionUpdate[1]);
             }
         }
+    }
+
+    public boolean getHasMoved() {
+        return hasMoved;
+    }
+
+    public void setHasMoved(boolean hasMoved) {
+        this.hasMoved = hasMoved;
     }
 }

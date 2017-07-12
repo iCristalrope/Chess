@@ -60,28 +60,68 @@ public class Board {
         if (getPiece(origin) == null) {
             throw new GameException("No piece to move");
         }
-        if (origin.equals(destination)){
+        if (origin.equals(destination)) {
             return;
         }
         Piece piece = getPiece(origin);
         piece.update(this, origin);
+        String className = piece.getClass().getSimpleName();
         List<Coordinates> access = piece.getAccessible();
         List<Coordinates> captur = piece.getCaptureable();
         if (!access.contains(destination) && !captur.contains(destination)) {
             throw new GameException("Spot is not reachable");
         }
+
+        //TODO refaire partie du bas de move  V
         
+        //TODO ajouter case roque pour accessible roi
+        //TODO ajouter case double deplacement pour accessible pion si pas encore bougée
+        //TODO ajouter case prise en passant pour accessible pion?
+        //TODO au premier deplacement de pion mettre hasMoved a true
+        //DEPLACEMENT EFFECTIF : movePiece
+        if (piece.getClass().getSimpleName().equals("Pawn")) {
+            Pawn pawn = (Pawn) piece;
+            if (piece.getColor() == Color.WHITE && destination.getRow() == 0) {
+                //TODO upgrade blancs
+            } else if (piece.getColor() == Color.BLACK && destination.getRow() == 7) { // pt un appel avec couleur?
+                //TODO upgrade noirs
+            } //
+        } else if (className.equals("King") && destination.getColumn() == origin.getColumn() + 2) {
+            //TODO roque
+        } else {
+            movePiece(piece, origin, destination); // normal move
+        }
+
+    }
+
+    /**
+     * Effectively moves a piece from one spot to another on the board and updates the whites and blacks lists. No
+     * integrity tests are done (assumed already checked)
+     *
+     * @param piece the piece to move
+     * @param origin the coordinates of the piece
+     * @param destination the coordinates the piece the piece has to move to
+     */
+    private void movePiece(Piece piece, Coordinates origin, Coordinates destination) {
+        //TODO retirer piece prise dans blacks/whites
         pieces[origin.getRow()][origin.getColumn()] = null;
         pieces[destination.getRow()][destination.getColumn()] = piece;
         if (piece.getColor() == Color.WHITE) {
+            if (getPiece(destination) != null) {
+                blacks.remove(destination);
+            }
             whites.remove(origin);
             whites.add(destination);
         } else {
             blacks.remove(origin);
             blacks.add(destination);
+            if (getPiece(destination) != null) {
+                whites.remove(destination);
+            }
         }
     }
 
+    //TODO void castle()
     /**
      * Places a piece on the board if the specified spot is free
      *
@@ -194,29 +234,102 @@ public class Board {
 
         return inCheck;
     }
-    
-    public boolean isKingCheckMate(Coordinates coord){
+
+    public boolean isKingCheckMate(Coordinates coord) {
         return isKingInCheck(coord) && !hasKingMoveLeft(coord);
     }
-    
-    public boolean isKingPat(Coordinates coord){
+
+    public boolean isKingPat(Coordinates coord) {
         return !isKingInCheck(coord) && !hasKingMoveLeft(coord);
     }
-    
+
+    /**
+     * Checks if the king at the coordinates received can castle
+     *
+     * @param kingCoord the position of the king
+     * @return true if the king can castle, false otherwise
+     */
+    public boolean canCastle(Coordinates kingCoord) {
+        boolean canCastle = true;
+        if (!isOnBoard(kingCoord)) {
+            throw new GameException("coordinates given for the king are not on the board");
+        }
+        if (kingCoord.getColumn() != 4) {
+            throw new GameException("king isn't in the right column to castle");
+        }
+        Piece piece = (Rook) getPiece(new Coordinates(kingCoord.getRow(), kingCoord.getColumn() + 3));
+        Rook rook; //cant cast a knight in rook for example, have to check first
+        King king = (King) getPiece(kingCoord);
+        Coordinates tmp;
+
+        if (king == null) {
+            throw new GameException("King is null");
+        }
+        Color color = king.getColor();
+
+        if (king.getHasMoved()) {
+            canCastle = false;
+        } else {
+            if (piece == null || !piece.getClass().getSimpleName().equals("Rook") || piece.getColor() != color) {
+                canCastle = false;
+            } else {
+                rook = (Rook) piece;
+                if (rook.getHasMoved()) {
+                    canCastle = false;
+                }
+            }
+        }
+
+        //tests tiles in between are free
+        boolean tile2OK = getPiece(new Coordinates(kingCoord.getRow(), kingCoord.getColumn() + 1)) == null;
+        boolean tile3OK = getPiece(new Coordinates(kingCoord.getRow(), kingCoord.getColumn() + 2)) == null;
+        if (!tile2OK || !tile3OK) {
+            canCastle = false;
+        }
+
+        //tests checks of the king
+        boolean inCheck1 = isKingInCheck(kingCoord);
+
+        tmp = new Coordinates(kingCoord.getRow(), kingCoord.getColumn() + 1);
+        move(kingCoord, tmp);
+        boolean inCheck2 = isKingInCheck(tmp);
+
+        tmp = new Coordinates(kingCoord.getRow(), kingCoord.getColumn() + 2);
+        move(new Coordinates(kingCoord.getRow(), kingCoord.getColumn() + 1), tmp);
+        boolean inCheck3 = isKingInCheck(tmp);
+
+        move(tmp, kingCoord);
+        if (inCheck1 || inCheck2 || inCheck3) {
+            canCastle = false;
+        }
+        return canCastle;
+    }
+
+    /**
+     * Moves the king and the rook to castle. Use canCastle method to check if it is possible
+     *
+     * @param kingCoord the position of the king
+     */
+    public void castle(Coordinates kingCoord) {
+        Coordinates rookCoord = new Coordinates(kingCoord.getRow(), kingCoord.getColumn() + 3);
+        move(kingCoord, new Coordinates(kingCoord.getRow(), kingCoord.getColumn() + 2));
+        move(rookCoord, new Coordinates(kingCoord.getRow(), kingCoord.getColumn() + 1));
+    }
+
     /*Checks if the king has any non check accessible positions left*/
-    private boolean hasKingMoveLeft(Coordinates coord){
+    private boolean hasKingMoveLeft(Coordinates coord) {
         if (getPiece(coord) == null || !getPiece(coord).getClass().getSimpleName().equals("King")) {
             throw new GameException("No king at this position");
         }
         King king = (King) getPiece(coord);
         king.update(this, coord);
-        
+
         Coordinates save = coord, onMoveSave = coord;
         boolean hasMove = false;
-        for(Coordinates accessible : king.accessible){
+        for (Coordinates accessible : king.accessible) {
             move(onMoveSave, accessible);
             onMoveSave = accessible;
-            if(!isKingInCheck(accessible)){
+            if (!isKingInCheck(accessible)) {
                 hasMove = true;
                 break;
             }
