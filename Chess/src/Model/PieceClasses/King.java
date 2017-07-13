@@ -44,6 +44,9 @@ public class King extends Piece implements Pieceable {
                 captureable.add(coord2);
             }
         }
+        if (board.canCastle(coord)){
+            accessible.add(coord);
+        }
     }
 
     public boolean getHasMoved() {
