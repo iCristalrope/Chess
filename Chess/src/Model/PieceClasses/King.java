@@ -22,6 +22,7 @@ public class King extends Piece implements Pieceable {
      */
     public King(Color color) {
         super(color);
+        this.hasMoved = false;
     }
 
     /**

@@ -8,8 +8,7 @@ import static Model.Board.*;
  * @author Philippe
  */
 public class Pawn extends Piece implements Pieceable {
-    
-    private boolean doubleMove;
+
     private final static int[][] DIRECTION_UPDATE = {{1, 0}, {1, 1}, {1, -1}};
 
     /**
@@ -40,15 +39,57 @@ public class Pawn extends Piece implements Pieceable {
 
             if (isOnBoard(coord2) && board.getPiece(coord2) == null && dirUpdt == 0) {
                 accessible.add(coord2);
-                //TODO check if free
+                //TODO check if free (vois pas le probleme)
             } else if (dirUpdt != 0 && board.isAttackable(coord2, color)) {
                 captureable.add(coord2);
             }
-
             dirUpdt++;
         }
-        
-        //TODO reecrire double deplacement
-        
+
+        if (board.getPiece(coord).getColor() == Color.WHITE) {
+            specialUpdateWhite(board, coord);
+        } else {
+            specialUpdateBlack(board, coord);
+        }
+    }
+
+    /**
+     * Completes the accessible list to account for special moves the pawn can make (White)
+     *
+     * @param board the board containing the pieces
+     * @param coord the coordinates of the pawn
+     */
+    private void specialUpdateWhite(Board board, Coordinates coord) {
+        Coordinates coordPassant = board.getCoordDoubleMove();
+
+        if (coord.getRow() == 6) {
+            accessible.add(new Coordinates(coord.getRow() - 2, coord.getColumn()));
+        }
+        if (coordPassant != null && board.getPiece(coordPassant).getColor() == Color.BLACK) {
+            if (new Coordinates(coord.getRow(), coord.getColumn() + 1).equals(coordPassant)
+                    || new Coordinates(coord.getRow(), coord.getColumn() - 1).equals(coordPassant)) {
+                accessible.add(new Coordinates(coordPassant.getRow() - 1, coordPassant.getColumn()));
+            }
+        }
+    }
+
+    /**
+     * Completes the accessible list to account for special moves the pawn can make (Black)
+     *
+     * @param board the board containing the pieces
+     * @param coord the coordinates of the pawn
+     */
+    private void specialUpdateBlack(Board board, Coordinates coord) {
+        Coordinates coordPassant = board.getCoordDoubleMove();
+
+        if (coord.getRow() == 1) {
+            accessible.add(new Coordinates(coord.getRow() + 2, coord.getColumn()));
+        }
+        if (coordPassant != null && board.getPiece(coordPassant).getColor() == Color.WHITE) {
+            if (new Coordinates(coord.getRow(), coord.getColumn() + 1).equals(coordPassant)
+                    || new Coordinates(coord.getRow(), coord.getColumn() - 1).equals(coordPassant)) {
+                accessible.add(new Coordinates(coordPassant.getRow() + 1, coordPassant.getColumn()));
+            }
+        }
     }
 }

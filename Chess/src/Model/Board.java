@@ -17,6 +17,7 @@ public class Board {
     private Piece[][] pieces;
     private ArrayList<Coordinates> whites;
     private ArrayList<Coordinates> blacks;
+    private Coordinates coordDoubleMove;
 
     public Board() {
         this(false);
@@ -27,6 +28,7 @@ public class Board {
         if (!isEmpty) {
             init();
         }
+        coordDoubleMove = null;
     }
 
     /**
@@ -45,6 +47,15 @@ public class Board {
      */
     public ArrayList<Coordinates> getBlacks() {
         return this.blacks;
+    }
+
+    /**
+     * getter of attribute coordDoubleMove
+     * 
+     * @return coordDoubleMove
+     */
+    public Coordinates getCoordDoubleMove() {
+        return coordDoubleMove;
     }
 
     /**

@@ -20,6 +20,7 @@ public class Rook extends Piece implements Pieceable {
      */
     public Rook(Color color) {
         super(color);
+        this.hasMoved = false;
     }
 
     /**
