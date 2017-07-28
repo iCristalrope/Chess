@@ -21,13 +21,15 @@ public class Board {
 
     public Board() {
         this(false);
+
     }
 
     public Board(boolean isEmpty) {
         pieces = new Piece[MAX_ROWS][MAX_COLUMNS];
         if (!isEmpty) {
-            init();
+            initBoard();
         }
+        initLists();
         coordDoubleMove = null;
     }
 
@@ -51,7 +53,7 @@ public class Board {
 
     /**
      * getter of attribute coordDoubleMove
-     * 
+     *
      * @return coordDoubleMove
      */
     public Coordinates getCoordDoubleMove() {
@@ -75,7 +77,14 @@ public class Board {
             return;
         }
         Piece piece = getPiece(origin);
-        piece.update(this, origin);
+
+        if (piece.getClass().getSimpleName().equals("King")) {
+            King kng = (King) piece;
+            kng.simpleUpdate(this, origin);
+        } else {
+            piece.update(this, origin);
+        }
+
         String className = piece.getClass().getSimpleName();
         List<Coordinates> access = piece.getAccessible();
         List<Coordinates> captur = piece.getCaptureable();
@@ -84,7 +93,6 @@ public class Board {
         }
 
         //TODO refaire partie du bas de move  V
-        
         //TODO ajouter case roque pour accessible roi
         //TODO ajouter case double deplacement pour accessible pion si pas encore bougée
         //TODO ajouter case prise en passant pour accessible pion?
@@ -236,8 +244,16 @@ public class Board {
         }
 
         for (Coordinates enemy : enemies) {
-            getPiece(enemy).update(this, enemy);
-            if (getPiece(enemy).getCaptureable().contains(coord)) {
+            Piece enem = getPiece(enemy);
+            King kng;
+            if (enem.getClass().getSimpleName().equals("King")) {
+                kng = (King) enem;
+                kng.simpleUpdate(this, enemy);
+            } else {
+                enem.update(this, enemy);
+            }
+
+            if (enem.getCaptureable().contains(coord)) {
                 inCheck = true;
                 break;
             }
@@ -299,20 +315,23 @@ public class Board {
         }
 
         //tests checks of the king
-        boolean inCheck1 = isKingInCheck(kingCoord);
+        if (canCastle) {
+            boolean inCheck1 = isKingInCheck(kingCoord);
 
-        tmp = new Coordinates(kingCoord.getRow(), kingCoord.getColumn() + 1);
-        move(kingCoord, tmp);
-        boolean inCheck2 = isKingInCheck(tmp);
+            tmp = new Coordinates(kingCoord.getRow(), kingCoord.getColumn() + 1);
+            move(kingCoord, tmp);
+            boolean inCheck2 = isKingInCheck(tmp);
 
-        tmp = new Coordinates(kingCoord.getRow(), kingCoord.getColumn() + 2);
-        move(new Coordinates(kingCoord.getRow(), kingCoord.getColumn() + 1), tmp);
-        boolean inCheck3 = isKingInCheck(tmp);
+            tmp = new Coordinates(kingCoord.getRow(), kingCoord.getColumn() + 2);
+            move(new Coordinates(kingCoord.getRow(), kingCoord.getColumn() + 1), tmp);
+            boolean inCheck3 = isKingInCheck(tmp);
 
-        move(tmp, kingCoord);
-        if (inCheck1 || inCheck2 || inCheck3) {
-            canCastle = false;
+            move(tmp, kingCoord);
+            if (inCheck1 || inCheck2 || inCheck3) {
+                canCastle = false;
+            }
         }
+        
         return canCastle;
     }
 
@@ -351,25 +370,12 @@ public class Board {
 
     ///////////////////////////////////////////////////////////////////////////////
     /*Puts the pieces needed to start a new game*/
-    private void init() {
+    private void initBoard() {
         placePieces(Color.BLACK, 0);
         placePawns(Color.BLACK, 1);
 
         placePawns(Color.WHITE, MAX_ROWS - 2);
         placePieces(Color.WHITE, MAX_ROWS - 1);
-
-        blacks = new ArrayList<>();
-        whites = new ArrayList<>();
-        for (int i = 0; i < 1; i++) {
-            for (int j = 0; j < MAX_COLUMNS; j++) {
-                blacks.add(new Coordinates(i, j));
-            }
-        }
-        for (int i = MAX_ROWS - 2; i < MAX_ROWS - 1; i++) {
-            for (int j = 0; j < MAX_COLUMNS; j++) {
-                whites.add(new Coordinates(i, j));
-            }
-        }
     }
 
     /*Places a full row of pawns of the given color at the given row.*/
@@ -389,6 +395,21 @@ public class Board {
         pieces[row][5] = new Bishop(color);
         pieces[row][6] = new Knight(color);
         pieces[row][7] = new Rook(color);
+    }
+
+    private void initLists() {
+        blacks = new ArrayList<>();
+        whites = new ArrayList<>();
+        for (int i = 0; i <= 1; i++) {
+            for (int j = 0; j < MAX_COLUMNS; j++) {
+                blacks.add(new Coordinates(i, j));
+            }
+        }
+        for (int i = MAX_ROWS - 2; i <= MAX_ROWS - 1; i++) {
+            for (int j = 0; j < MAX_COLUMNS; j++) {
+                whites.add(new Coordinates(i, j));
+            }
+        }
     }
 
     @Override
