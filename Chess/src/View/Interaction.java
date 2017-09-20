@@ -1,6 +1,9 @@
 package View;
 
+import Model.Color;
 import Model.Coordinates;
+import Model.Piece;
+import Model.PieceClasses.*;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -63,9 +66,45 @@ public class Interaction {
                 inputOK = true;
                 c = new Coordinates(x, y);
             } else {
-                System.out.println("Invalid input. Row should be in [0, 4] "+ "and column in [0, 5]");
+                System.out.println("Invalid input. Row should be in [0, 4] " + "and column in [0, 5]");
             }
         }
         return c;
-    } 
+    }
+
+    /**
+     * Shows a message and tries to read a type of piece a pawn can upgrade to. Once it succeeds, it returns the piece
+     * that will replace the pawn
+     *
+     * @param color the color of the pawn to upgrade
+     * @return the upgraded piece
+     */
+    public static Piece getUpgradePiece(Color color) {
+        boolean inputOK = false;
+        String input;
+        Piece upgraded = null;
+        System.out.println("You can upgradeyou pawn!" + System.getProperty("line.separator")
+                + "Choose between Queen, Rook, Bishop and Knight");
+        while (!inputOK) {
+            input = CLAVIER.next();
+            inputOK = true;
+            switch (input.toLowerCase()) {
+                case "queen":
+                    upgraded = new Queen(color);
+                    break;
+                case "rook":
+                    upgraded = new Rook(color);
+                    break;
+                case "bishop":
+                    upgraded = new Bishop(color);
+                    break;
+                case "knight":
+                    upgraded = new Knight(color);
+                    break;
+                default :
+                    inputOK = false;
+            }
+        }
+        return upgraded;
+    }
 }

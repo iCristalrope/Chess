@@ -22,5 +22,6 @@ public class Chess {
         board.getPiece(coord).update(board, coord);
         System.out.println(board.getPiece(coord).getAccessible());
         System.out.println(board.getPiece(coord).getCaptureable());
+        System.out.println(board.canCastle(coord));
     }
 }

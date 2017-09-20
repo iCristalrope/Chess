@@ -1,6 +1,7 @@
 package Model;
 
 import Model.PieceClasses.*;
+import View.Interaction;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,41 +77,29 @@ public class Board {
         if (origin.equals(destination)) {
             return;
         }
+
         Piece piece = getPiece(origin);
+        piece.update(this, origin);
 
-        if (piece.getClass().getSimpleName().equals("King")) {
-            King kng = (King) piece;
-            kng.simpleUpdate(this, origin);
-        } else {
-            piece.update(this, origin);
-        }
-
-        String className = piece.getClass().getSimpleName();
         List<Coordinates> access = piece.getAccessible();
         List<Coordinates> captur = piece.getCaptureable();
         if (!access.contains(destination) && !captur.contains(destination)) {
             throw new GameException("Spot is not reachable");
         }
 
-        //TODO refaire partie du bas de move  V
-        //TODO ajouter case roque pour accessible roi
-        //TODO ajouter case double deplacement pour accessible pion si pas encore bougée
-        //TODO ajouter case prise en passant pour accessible pion?
-        //TODO au premier deplacement de pion mettre hasMoved a true
-        //DEPLACEMENT EFFECTIF : movePiece
-        if (piece.getClass().getSimpleName().equals("Pawn")) {
-            Pawn pawn = (Pawn) piece;
-            if (piece.getColor() == Color.WHITE && destination.getRow() == 0) {
-                //TODO upgrade blancs
-            } else if (piece.getColor() == Color.BLACK && destination.getRow() == 7) { // pt un appel avec couleur?
-                //TODO upgrade noirs
-            } //
-        } else if (className.equals("King") && destination.getColumn() == origin.getColumn() + 2) {
-            //TODO roque
+        if (canSpecialMove(origin, destination)) {
+            specialMove(origin, destination);
         } else {
             movePiece(piece, origin, destination); // normal move
         }
 
+        if (canUpgrade(destination)) {
+            upgrade(destination);
+        }
+
+        if (getPiece(coordDoubleMove).getColor() != piece.getColor()) {
+            coordDoubleMove = null;
+        }
     }
 
     /**
@@ -122,7 +111,6 @@ public class Board {
      * @param destination the coordinates the piece the piece has to move to
      */
     private void movePiece(Piece piece, Coordinates origin, Coordinates destination) {
-        //TODO retirer piece prise dans blacks/whites
         pieces[origin.getRow()][origin.getColumn()] = null;
         pieces[destination.getRow()][destination.getColumn()] = piece;
         if (piece.getColor() == Color.WHITE) {
@@ -140,7 +128,35 @@ public class Board {
         }
     }
 
-    //TODO void castle()
+    private boolean canSpecialMove(Coordinates origin, Coordinates destination) {
+        boolean canSpecialMove = false;
+        Piece piece = getPiece(origin);
+        if (canCastle(origin)) {
+            canSpecialMove = true;
+        } else if (canEnPassant(origin, destination)) {
+            canSpecialMove = true;
+        } else if (canDoubleMove(origin, destination)) {
+            canSpecialMove = true;
+        }
+
+        return canSpecialMove;
+    }
+
+    /**
+     * method that handles the special moves such as enPassant, doubleMove and Castling
+     */
+    private void specialMove(Coordinates origin, Coordinates destination) {
+        if (canEnPassant(origin, destination)) {
+            enPassant(origin, destination);
+        }else if (canDoubleMove(origin, destination)){
+            //TODO doubleMove?
+        }else if (canCastle(origin)){
+            castle(origin);
+        }else{
+            throw new IllegalStateException("canSpecialMove mais pas specialMove");
+        }
+    }
+
     /**
      * Places a piece on the board if the specified spot is free
      *
@@ -282,7 +298,7 @@ public class Board {
             throw new GameException("coordinates given for the king are not on the board");
         }
         if (kingCoord.getColumn() != 4) {
-            throw new GameException("king isn't in the right column to castle");
+            return false;
         }
         Piece piece = (Rook) getPiece(new Coordinates(kingCoord.getRow(), kingCoord.getColumn() + 3));
         Rook rook; //cant cast a knight in rook for example, have to check first
@@ -319,20 +335,146 @@ public class Board {
             boolean inCheck1 = isKingInCheck(kingCoord);
 
             tmp = new Coordinates(kingCoord.getRow(), kingCoord.getColumn() + 1);
-            move(kingCoord, tmp);
+            movePiece(king, kingCoord, tmp);
             boolean inCheck2 = isKingInCheck(tmp);
 
             tmp = new Coordinates(kingCoord.getRow(), kingCoord.getColumn() + 2);
-            move(new Coordinates(kingCoord.getRow(), kingCoord.getColumn() + 1), tmp);
+            movePiece(king, new Coordinates(kingCoord.getRow(), kingCoord.getColumn() + 1), tmp);
             boolean inCheck3 = isKingInCheck(tmp);
 
-            move(tmp, kingCoord);
+            movePiece(king, tmp, kingCoord);
             if (inCheck1 || inCheck2 || inCheck3) {
                 canCastle = false;
             }
         }
-        
+
         return canCastle;
+    }
+
+    /**
+     * Checks if a piece can doubleMove
+     *
+     * @param origin the position of the piece at the start
+     * @param destination the position the piece is trying to reach
+     * @return true if the piece is a pawn that can double move, false otherwise
+     */
+    private boolean canDoubleMove(Coordinates origin, Coordinates destination) {
+        boolean canDoubleMove = true;
+        Piece piece = getPiece(origin);
+        if (!piece.getClass().getSimpleName().equals("Pawn")) {
+            canDoubleMove = false;
+        }
+
+        if (piece.getColor() == Color.WHITE) {
+            if (origin.getRow() != 6 || getPiece(new Coordinates(4, origin.getColumn())) != null) {
+                canDoubleMove = false;
+            }
+        } else {
+            if (origin.getRow() != 1 || getPiece(new Coordinates(3, origin.getColumn())) != null) {
+                canDoubleMove = false;
+            }
+        }
+
+        return canDoubleMove;
+    }
+
+    /**
+     * Checks if a piece is a pawn that can make the en passant move on another pawn
+     *
+     * @param origin the position of the pawn trying to en passant
+     * @param destination the position the pawn would have after completing the en passant
+     * @return true if the pawn can en passant, false otherwise
+     */
+    private boolean canEnPassant(Coordinates origin, Coordinates destination) {
+        if (origin == null || destination == null) {
+            throw new GameException("origin or destination coordinates are null");
+        }
+
+        if (!isOnBoard(origin) || !isOnBoard(destination)) {
+            throw new GameException("origin or destination not on the board");
+        }
+
+        Color doubleMoveColor = getPiece(coordDoubleMove).getColor();
+        Piece piece = getPiece(origin);
+        
+        if (getPiece(destination) != null || piece == null) {
+            return false;
+        }
+        if (!piece.getClass().getSimpleName().equals("Pawn")) {
+            return false;
+        }
+
+        Color pieceColor = piece.getColor();
+        
+        if (pieceColor == doubleMoveColor) {
+            return false;
+        }
+
+        if (pieceColor == Color.WHITE) {
+            if (new Coordinates(origin.getRow() - 1, origin.getColumn()).equals(coordDoubleMove)) {
+                return true;
+            }
+        } else {
+            if (new Coordinates(origin.getRow() + 1, origin.getColumn()).equals(coordDoubleMove)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Performs the enPassant move of the pawn
+     *
+     * @param origin the position of the pawn trying to en passant
+     * @param destination the position the pawn will have after completing the en passant
+     */
+    private void enPassant(Coordinates origin, Coordinates destination) {
+        Piece piece = getPiece(origin);
+        movePiece(piece, origin, destination);
+        if (piece.getColor() == Color.WHITE){
+            removePiece(new Coordinates(origin.getRow() - 1, origin.getColumn()));
+        }else{
+            removePiece(new Coordinates(origin.getRow() + 1, origin.getColumn()));
+        }
+    }
+
+    /**
+     * Checks if a piece is a pawn that can upgrade at the end of a move action
+     *
+     * @param origin the position
+     * @return true if the piece is a pawn that can upgrade
+     */
+    private boolean canUpgrade(Coordinates coord) {
+        boolean canUpgrade = true;
+        Piece piece = getPiece(coord);
+        if (!piece.getClass().getSimpleName().equals("Pawn")) {
+            canUpgrade = false;
+        }
+
+        if (piece.getColor() == Color.WHITE) {
+            if (coord.getRow() != 0) {
+                canUpgrade = false;
+            }
+        } else {
+            if (coord.getRow() != 7) {
+                canUpgrade = false;
+            }
+        }
+
+        return canUpgrade;
+    }
+
+    public void upgrade(Coordinates destination) {
+        Piece piece = getPiece(destination);
+        Piece upgraded;
+        if (piece == null) {
+            throw new GameException("Pawn to upgrade is null");
+        }
+        if (!piece.getClass().getSimpleName().equals("Pawn")) {
+            throw new GameException("Piece is not a pawn");
+        }
+        upgraded = Interaction.getUpgradePiece(piece.getColor()); //faire qqchose avec upgraded ou pas?
     }
 
     /**

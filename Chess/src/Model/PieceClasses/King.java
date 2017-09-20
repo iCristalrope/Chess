@@ -13,7 +13,7 @@ public class King extends Piece implements Pieceable {
     private static final int[][] DIRECTION_UPDATE = {
         {-1, +0}, {-1, +1}, {+0, +1}, {+1, +1}, {+1, +0}, {+1, -1}, {+0, -1}, {-1, -1}
     };
-    private boolean hasMoved;
+    private boolean hasMoved; //TODO pas sûr modifié à premier deplacement; idem Rook
 
     /**
      * Creates a King of the specified color
@@ -46,7 +46,7 @@ public class King extends Piece implements Pieceable {
             }
         }
         if (board.canCastle(coord)) {
-            accessible.add(coord);
+            accessible.add(coord); //TODO plutot 2 à droite de coord
         }
     }
 
