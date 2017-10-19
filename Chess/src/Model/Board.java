@@ -97,7 +97,7 @@ public class Board {
             upgrade(destination);
         }
 
-        if (getPiece(coordDoubleMove).getColor() != piece.getColor()) {
+        if (coordDoubleMove != null && getPiece(coordDoubleMove).getColor() != piece.getColor()) {
             coordDoubleMove = null;
         }
     }
@@ -148,11 +148,11 @@ public class Board {
     private void specialMove(Coordinates origin, Coordinates destination) {
         if (canEnPassant(origin, destination)) {
             enPassant(origin, destination);
-        }else if (canDoubleMove(origin, destination)){
-            //TODO doubleMove?
-        }else if (canCastle(origin)){
+        } else if (canDoubleMove(origin, destination)) {
+            movePiece(getPiece(origin), origin, destination);
+        } else if (canCastle(origin)) {
             castle(origin);
-        }else{
+        } else {
             throw new IllegalStateException("canSpecialMove mais pas specialMove");
         }
     }
@@ -282,8 +282,24 @@ public class Board {
         return isKingInCheck(coord) && !hasKingMoveLeft(coord);
     }
 
-    public boolean isKingPat(Coordinates coord) {
-        return !isKingInCheck(coord) && !hasKingMoveLeft(coord);
+    public boolean isKingPat(Coordinates coord) { //TODO not ok ?
+        boolean cond1 = !isKingInCheck(coord) && !hasKingMoveLeft(coord);
+        boolean cond2 = true;
+        ArrayList<Coordinates> liste;
+        if (getPiece(coord).getColor() == Color.WHITE) {
+            liste = whites;
+        } else {
+            liste = blacks;
+        }
+        for (Coordinates c : liste) {
+            Piece piece = getPiece(c);
+            piece.update(this, c);
+            if (!piece.accessible.isEmpty() || !piece.captureable.isEmpty()) {
+                cond2 = false;
+                break;
+            }
+        }
+        return cond1 && cond2;
     }
 
     /**
@@ -292,7 +308,9 @@ public class Board {
      * @param kingCoord the position of the king
      * @return true if the king can castle, false otherwise
      */
-    public boolean canCastle(Coordinates kingCoord) {
+    public boolean canCastle(Coordinates kingCoord) { 
+//TODO erreur de logique je crois -> à réecrire
+//TODO changer les listes de cases accessibles aussi
         boolean canCastle = true;
         if (!isOnBoard(kingCoord)) {
             throw new GameException("coordinates given for the king are not on the board");
@@ -300,14 +318,21 @@ public class Board {
         if (kingCoord.getColumn() != 4) {
             return false;
         }
-        Piece piece = (Rook) getPiece(new Coordinates(kingCoord.getRow(), kingCoord.getColumn() + 3));
+        Piece piece = getPiece(new Coordinates(kingCoord.getRow(), kingCoord.getColumn() + 3));
         Rook rook; //cant cast a knight in rook for example, have to check first
-        King king = (King) getPiece(kingCoord);
-        Coordinates tmp;
-
-        if (king == null) {
+        Piece kingPiece = getPiece(kingCoord);
+        if (kingPiece == null) {
             throw new GameException("King is null");
         }
+        King king = null;
+        if (kingPiece.getClass().getSimpleName().equals("King")) {
+            king = (King) kingPiece;
+        }else{
+            return false;
+        }
+
+        Coordinates tmp;
+
         Color color = king.getColor();
 
         if (king.getHasMoved()) {
@@ -394,9 +419,17 @@ public class Board {
             throw new GameException("origin or destination not on the board");
         }
 
+        if (getPiece(origin) == null) {
+            return false;
+        }
+
+        if (coordDoubleMove == null) {
+            return false;
+        }
+
         Color doubleMoveColor = getPiece(coordDoubleMove).getColor();
         Piece piece = getPiece(origin);
-        
+
         if (getPiece(destination) != null || piece == null) {
             return false;
         }
@@ -405,7 +438,7 @@ public class Board {
         }
 
         Color pieceColor = piece.getColor();
-        
+
         if (pieceColor == doubleMoveColor) {
             return false;
         }
@@ -432,9 +465,9 @@ public class Board {
     private void enPassant(Coordinates origin, Coordinates destination) {
         Piece piece = getPiece(origin);
         movePiece(piece, origin, destination);
-        if (piece.getColor() == Color.WHITE){
+        if (piece.getColor() == Color.WHITE) {
             removePiece(new Coordinates(origin.getRow() - 1, origin.getColumn()));
-        }else{
+        } else {
             removePiece(new Coordinates(origin.getRow() + 1, origin.getColumn()));
         }
     }

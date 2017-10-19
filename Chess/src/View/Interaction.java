@@ -2,6 +2,7 @@ package View;
 
 import Model.Color;
 import Model.Coordinates;
+import Model.GameException;
 import Model.Piece;
 import Model.PieceClasses.*;
 import java.util.InputMismatchException;
@@ -41,7 +42,7 @@ public class Interaction {
                 inputOK = true;
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Enter an integer.");
-                CLAVIER.next();
+                CLAVIER.next(); //empties the buffer
             }
         }
         return i;
@@ -54,22 +55,26 @@ public class Interaction {
      * @return the Coordinates read from the keyboard
      */
     public static Coordinates getNextCoordinates(String msg) {
-        Coordinates c = null;
+        Coordinates coord = null;
         boolean inputOK = false;
         int x;
-        int y;
+        String y;
         while (!inputOK) {
             System.out.println(msg);
-            x = getNextInt("Row at which to place the animal : ");
-            y = getNextInt("Column at which to place the animal : ");
-            if (x >= 0 && x <= NB_ROWS && y >= 0 && y <= NB_COLUMNS) {
+            x = getNextInt("Row number : ");
+            System.out.print("Column letter : ");
+            y = CLAVIER.next();
+            try {
+                coord = new Coordinates(x, y);
+                System.out.println(coord);
                 inputOK = true;
-                c = new Coordinates(x, y);
-            } else {
-                System.out.println("Invalid input. Row should be in [0, 4] " + "and column in [0, 5]");
+            } catch (GameException e) {
+                System.out.println("Invalid input."); //TODO probleme ne lecture en trop si refuse les coords
+                System.out.println(msg);
+                CLAVIER.next(); //empties the buffer
             }
         }
-        return c;
+        return coord;
     }
 
     /**
@@ -101,7 +106,7 @@ public class Interaction {
                 case "knight":
                     upgraded = new Knight(color);
                     break;
-                default :
+                default:
                     inputOK = false;
             }
         }

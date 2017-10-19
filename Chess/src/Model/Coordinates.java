@@ -21,40 +21,17 @@ public class Coordinates {
         this.column = column;
     }
 
-    public Coordinates(String letter, int column) {
-        this.column = column;
-        if (column > 8 || column < 1) {
-            throw new GameException("Column out of board");
+    public Coordinates(int row, String letter) {
+        this.row = Board.MAX_ROWS - row;
+        if (row > 7 || row < 0) {
+            throw new GameException("row out of board");
         }
-        letter = letter.toUpperCase().substring(0,0);
-        switch (letter) {
-            case "A":
-                this.row = 8;
-                break;
-            case "B":
-                this.row = 7;
-                break;
-            case "C":
-                this.row = 6;
-                break;
-            case "D":
-                this.row = 5;
-                break;
-            case "E":
-                this.row = 4;
-                break;
-            case "F":
-                this.row = 3;
-                break;
-            case "G":
-                this.row = 2;
-                break;
-            case "H":
-                this.row = 1;
-                break;
-            default :
-                throw new GameException("Rows out of the board");
+        letter = letter.toUpperCase().substring(0,1);
+        int col = letter.charAt(0) - 65;
+        if (col < 0 || col > 7){
+            throw new GameException("column not on the board");
         }
+        this.column = col;
     }
 
     /**

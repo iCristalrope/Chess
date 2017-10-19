@@ -46,7 +46,7 @@ public class ConsoleDisplayBoard {
         }
 
         //showBoard
-        System.out.println("    A    B    C    D    E    F    G    H");
+        System.out.println("     A    B    C    D    E    F    G    H");
         for (int i = 0; i < screen.length; i++) { // print array
             numberLine(i);
             for (String item : screen[i]) {
@@ -55,7 +55,7 @@ public class ConsoleDisplayBoard {
             numberLine(i);
             System.out.println();
         }
-        System.out.println("    A    B    C    D    E    F    G    H");
+        System.out.println("     A    B    C    D    E    F    G    H");
     }
 
     /**
@@ -135,9 +135,9 @@ public class ConsoleDisplayBoard {
      */
     private static void numberLine(int i) {
         if (i % 2 == 1 && i >= 1) {
-            System.out.print(ROWS_DISPLAY / 2 - i / 2 + " ");
+            System.out.print(" " + (ROWS_DISPLAY / 2 - i / 2) + " ");
         } else {
-            System.out.print("  ");
+            System.out.print("   ");
         }
     }
 }

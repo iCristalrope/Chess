@@ -28,6 +28,8 @@ public class Pawn extends Piece implements Pieceable {
      */
     @Override
     public void update(Board board, Coordinates coord) {
+        this.accessible.clear();
+        this.captureable.clear();
         int multColor = this.color == Color.WHITE ? -1 : 1;
         int row, col, dirUpdt = 0;
         Coordinates coord2;
