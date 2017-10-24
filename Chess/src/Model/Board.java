@@ -375,6 +375,40 @@ public class Board {
 
         return canCastle;
     }
+    
+    public boolean canCastle2(Coordinates kingCoord, boolean left) {
+        if (!isOnBoard(kingCoord)) {
+            throw new GameException("Coordinates given for the king are not on the board");
+        }
+        //TODO method getPiece(Coordinates, Class) ?
+        //get king if not hasMoved
+        Piece piece = getPiece(kingCoord);
+        if (!(piece instanceof King)) {
+            return false;
+        }
+        King king = (King) piece;
+        if (king.getHasMoved()) {
+            return false;
+        }
+        //get rook if not hasMoved
+        Coordinates rookCoord;
+        if (left) {
+            rookCoord = new Coordinates(kingCoord.getRow(), 0);
+        } else {
+            rookCoord = new Coordinates(kingCoord.getRow(), MAX_COLUMNS - 1);
+        }
+        piece = getPiece(rookCoord);
+        if (!(piece instanceof Rook)) {
+            return false;
+        }
+        Rook rook = (Rook) piece;
+        if (rook.getHasMoved()) {
+            return false;
+        }
+        //TODO method isFreeBetween(kingCoord, rookCoord) ?
+        //TODO finish method
+        return false;
+    }
 
     /**
      * Checks if a piece can doubleMove
